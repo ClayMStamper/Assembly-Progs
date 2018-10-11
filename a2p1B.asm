@@ -47,7 +47,7 @@ main:
 			# test cases shown (and include the result in hardcopy).
 			##########################################################
 			
-			
+			sll $v1
 			
 			
 			
