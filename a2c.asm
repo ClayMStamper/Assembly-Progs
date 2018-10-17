@@ -68,9 +68,7 @@ main:
 			
 			sw $t0, 8($a0)
 			sw $t1, 0($a0)
-			
-			syscall
-			
+					
 			la $a0, intArr
 			
 			lw $t0, 4($a0)
@@ -78,8 +76,6 @@ main:
 			
 			sw $t0, 12($a0)
 			sw $t1, 4($a0)
-			
-			syscall
 			
 #print arr swapped and reversed
 			
