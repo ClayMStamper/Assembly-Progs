@@ -68,8 +68,6 @@ main:
 			
 			sw $t0, 8($a0)
 			sw $t1, 0($a0)
-					
-			la $a0, intArr
 			
 			lw $t0, 4($a0)
 			lw $t1, 12($a0)
