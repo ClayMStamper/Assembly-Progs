@@ -68,40 +68,47 @@ WTest2: if (reply != 'n' && reply != 'N') goto begW2;
 endW2: //                  }
                   cout << endl;
 
-                  if (used1 > 0)
-                  {
+//                  if (used1 > 0)
+                  if (used1 <= 0) goto endI2;
+begI2: //                 {
                      total = 0;
                      for (hopPtr1 = a1, endPtr1 = a1 + used1; hopPtr1 < endPtr1; ++hopPtr1)
                      {
                         target = *hopPtr1;
                         total += target;
-                        if (target % 2 == 1)
-                        {
+//                        if (target % 2 == 1)
+                        if (target % 2 != 1) goto else3;
+begI3: //                        {
                            hopPtr3 = a3 + used3 - 1;
                            endPtr3 = a3;
                            while (hopPtr3 >= endPtr3)
                            {
-                              if (*hopPtr3 > target)
-                              {
+//                              if (*hopPtr3 > target)
+                              if (*hopPtr3 <= target) goto else4;
+begI4: //                              {
                                  *(hopPtr3 + 1) = *hopPtr3;
                                  --hopPtr3;
-                              }
-                              else
-                              {
+                                 goto endI4;
+       //                       }
+else4: //                              else
+      //                        {
                                  break;
-                              }
-                           }
+endI4: //                              }
+                           ;}
                            *(hopPtr3 + 1) = target;
                            ++used3;
-                        }
-                        else
-                        {
+                           goto endI3;
+ //                       }
+ else3: //                       else
+        //                {
+
                            hopPtr2 = a2;
                            endPtr2 = a2 + used2;
                            while (hopPtr2 < endPtr2)
                            {
-                              if (*hopPtr2 >= target)
-                              {
+ //                             if (*hopPtr2 >= target)
+                              if (*hopPtr2 < target) goto else5;
+begI5: //                              {
                                  hopPtr21 = endPtr2;
                                  while (hopPtr21 > hopPtr2)
                                  {
@@ -109,21 +116,22 @@ endW2: //                  }
                                     --hopPtr21;
                                  }
                                  break;
-                              }
-                              else
-                              {
+       //                       }
+else5: //                              else
+       //                       {
                                  ++hopPtr2;
-                              }
-                           }
+ endI5: //                             }
+                           ;}
                            *hopPtr2 = target;
                            ++used2;
-                        }
+ endI3: //                       }
                         mean = total/used1;
                      }
 
                      cout << begA1Str;
-                     if (used1 > 0)
-                     {
+//                     if (used1 > 0)
+                     if (used1 <= 0) goto endI6;
+begI6: //                     {
                         hopPtr1 = a1;
                         endPtr1 = a1 + used1;
                         do
@@ -132,12 +140,13 @@ endW2: //                  }
                            ++hopPtr1;
                         }
                         while (hopPtr1 < endPtr1);
-                     }
+endI6: //                     }
                      cout << endl;
 
                      cout << commA2Str;
-                     if (used2 > 0)
-                     {
+//                     if (used2 > 0)
+                     if (used2 <= 0) goto endI7;
+begI7: //                     {
                         hopPtr2 = a2;
                         endPtr2 = a2 + used2;
                         do
@@ -146,12 +155,13 @@ endW2: //                  }
                            ++hopPtr2;
                         }
                         while (hopPtr2 < endPtr2);
-                     }
+endI7: //                     }
                      cout << endl;
 
                      cout << commA3Str;
-                     if (used3 > 0)
-                     {
+//                     if (used3 > 0)
+                     if (used3 <= 0) goto endI8;
+begI8: //                     {
                         hopPtr3 = a3;
                         endPtr3 = a3 + used3;
                         do
@@ -160,7 +170,7 @@ endW2: //                  }
                            ++hopPtr3;
                         }
                         while (hopPtr3 < endPtr3);
-                     }
+endI8: //                     }
                      cout << endl;
 
                      hopPtr1 = a1;
@@ -170,18 +180,20 @@ endW2: //                  }
                      endPtr3 = a3 + used3;
                      while (hopPtr2 < endPtr2 && hopPtr3 < endPtr3)
                      {
-                        if (*hopPtr2 < *hopPtr3)
-                        {
+//                        if (*hopPtr2 < *hopPtr3)
+                        if (*hopPtr2 >= *hopPtr3) goto else9;
+begI9: //                        {
                            *hopPtr1 = *hopPtr2;
                            ++hopPtr2;
-                        }
-                        else
-                        {
+                           goto endI9;
+       //                 }
+else9: //                        else
+       //                 {
                            *hopPtr1 = *hopPtr3;
                            ++hopPtr3;
-                        }
+endI9: //                        }
                         ++hopPtr1;
-                     }
+                     ;}
                      while (hopPtr2 < endPtr2)
                      {
                         *hopPtr1 = *hopPtr2;
@@ -202,26 +214,29 @@ endW2: //                  }
                      for (hopPtr1 = a1, endPtr1 = a1 + used1; hopPtr1 < endPtr1; ++hopPtr1)
                      {
                         target = *hopPtr1;
-                        if (target < mean)
-                        {
+ //                       if (target < mean)
+                        if (target >= mean) goto else10;
+begI10: //                        {
                            *hopPtr2 = target;
                            ++used2;
                            ++hopPtr2;
-                        }
-                        else
-                        {
+                           goto endI10;
+        //                }
+else10: //                        else
+        //                {
                            if (target > mean)
                            {
                               *hopPtr3 = target;
                               ++used3;
                               ++hopPtr3;
                            }
-                        }
-                     }
+endI10: //                        }
+                     ;}
 
                      cout << procA1Str;
-                     if (used1 > 0)
-                     {
+//                     if (used1 > 0)
+                     if (used1 <= 0) goto endI11;
+begI11: //                     {
                         hopPtr1 = a1;
                         endPtr1 = a1 + used1;
                         do
@@ -230,7 +245,7 @@ endW2: //                  }
                            ++hopPtr1;
                         }
                         while (hopPtr1 < endPtr1);
-                     }
+endI11: //                     }
                      cout << endl;
 
                      cout << commA2Str;
@@ -260,7 +275,7 @@ endW2: //                  }
                         while (hopPtr3 < endPtr3);
                      }
                      cout << endl;
-                  }
+endI2: //                  }
 
                   cout << endl;
                   cout << dacStr;
