@@ -45,25 +45,29 @@ begW1: //               {
                   used2 = 0;
                   used3 = 0;
                   hopPtr1 = a1;
-                  while (reply != 'n' && reply != 'N')
-                  {
+//                  while (reply != 'n' && reply != 'N')
+                  goto WTest2;
+begW2: //         {
                      cout << einStr;
                      cout << (used1 + 1);
                      cout << ':' << ' ';
                      cin >> *hopPtr1;
                      ++used1;
                      ++hopPtr1;
-                     if (used1 < 12)
-                     {
+//                     if (used1 < 12)
+                     if (used1 >= 12) goto endI1;
+begI1: //                     {
                         cout << emiStr;
                         cin >> reply;
-                     }
+endI1: //                     }
                      else
                      {
                         cout << moStr << 12 << ieStr << endl;
                         reply = 'n';
                      }
-                  }
+
+WTest2:            if (reply != 'n' && reply != 'N') goto begW2;
+endW2: //          }
                   cout << endl;
 
                   if (used1 > 0)
@@ -265,7 +269,7 @@ begW1: //               {
                   cin >> reply;
                   cout << endl;
 
-  WTest1: if (reply == 'n' && reply == 'N') goto begW1;
+  WTest1: if (reply != 'n' && reply != 'N') goto begW1;
   endW1: //             }
 
                cout << dlStr << '\n';
