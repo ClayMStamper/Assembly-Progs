@@ -35,8 +35,12 @@ int main()
 
                cout << endl;
                reply = 'y';
-               while (reply != 'n' && reply != 'N')
-               {
+
+               cout << endl << endl << "TEST";
+
+//	       while (reply != 'n' && reply != 'N')
+           goto WTest1;
+begW1: //               {
                   used1 = 0;
                   used2 = 0;
                   used3 = 0;
@@ -260,7 +264,9 @@ int main()
                   cout << dacStr;
                   cin >> reply;
                   cout << endl;
-               }
+
+  WTest1: if (reply == 'n' && reply == 'N') goto begW1;
+  endW1: //             }
 
                cout << dlStr << '\n';
                cout << byeStr << '\n';
