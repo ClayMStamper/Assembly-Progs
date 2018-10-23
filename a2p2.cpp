@@ -36,14 +36,15 @@ int main()
                cout << endl;
                reply = 'y';
 //               while (reply != 'n' && reply != 'N')
-                goto WTest1;
+goto WTest1;
 begW1: //              {
                   used1 = 0;
                   used2 = 0;
                   used3 = 0;
                   hopPtr1 = a1;
-                  while (reply != 'n' && reply != 'N')
-                  {
+//                while (reply != 'n' && reply != 'N')
+goto WTest2;
+begW2: //                  {
                      cout << einStr;
                      cout << (used1 + 1);
                      cout << ':' << ' ';
@@ -60,7 +61,8 @@ begW1: //              {
                         cout << moStr << 12 << ieStr << endl;
                         reply = 'n';
                      }
-                  }
+WTest2: if (reply != 'n' && reply != 'N') goto begW2;
+endW2: //                  }
                   cout << endl;
 
                   if (used1 > 0)
@@ -261,7 +263,7 @@ begW1: //              {
                   cout << dacStr;
                   cin >> reply;
                   cout << endl;
- WTest1:        if (reply != 'n' && reply != 'N') goto begW1;
+ WTest1: if (reply != 'n' && reply != 'N') goto begW1;
  endW1: //              }
 
                cout << dlStr << '\n';
