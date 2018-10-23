@@ -51,16 +51,19 @@ begW2: //                  {
                      cin >> *hopPtr1;
                      ++used1;
                      ++hopPtr1;
-                     if (used1 < 12)
-                     {
+//                     if (used1 < 12)
+                     if (used1 >= 12) goto else1;
+begI1: //                     {
                         cout << emiStr;
                         cin >> reply;
-                     }
-                     else
-                     {
+                        goto endI1;
+       //              }
+else1: //                     else
+//                     {
                         cout << moStr << 12 << ieStr << endl;
                         reply = 'n';
-                     }
+endI1://                     }
+
 WTest2: if (reply != 'n' && reply != 'N') goto begW2;
 endW2: //                  }
                   cout << endl;
