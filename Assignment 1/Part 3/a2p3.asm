@@ -16,8 +16,7 @@
 # $a1: endPtr1
 # $a2: endPtr2
 # $a3: endPtr3
-# $t0: store-to address or
-###temp-holder 2 (non-overlappingly)
+# $t0: store-to address or temp-holder 2 (non-overlappingly)
 # $t1: used1
 # $t2: used2
 # $t3: used3
@@ -30,11 +29,12 @@
 # $v1: reply or temp-holder 1 (non-overlappingly)
 ################################################
 
-int a1[12],
-    a2[12],
-    a3[12];
-char einStr[]    = "Enter integer #";
-char moStr[]     = "Max of ";
+
+#int a1[12],
+#    a2[12],
+#    a3[12];
+#char einStr[]    = "Enter integer #";
+#char moStr[]     = "Max of ";
 char ieStr[]     = " ints entered...";
 char emiStr[]    = "Enter more ints? (n or N = no, others = yes) ";
 char begA1Str[]  = "beginning a1: ";
@@ -44,6 +44,22 @@ char commA3Str[] = "          a3: ";
 char dacStr[]    = "Do another case? (n or N = no, others = yes) ";
 char dlStr[]     = "================================";
 char byeStr[]    = "bye...";
+
+			.data
+a1:			.space, 48
+a2:			.space, 48
+a3: 			.space, 48
+einStr:			.asciiz, "\nEnter integer #"
+moStr:			.asciiz, "Max of "
+ieStr:			.asciiz, " ints entered..."
+emiStr:    		.asciiz, "Enter more ints? (n or N = no, others = yes) "
+begA1Str:  		.asciiz, "beginning a1: "
+procA1Str:  		.asciiz, "processed a1: "
+commA2Str: 		.asciiz, "          a2: "
+commA3Str:  		.asciiz, "          a3: "
+dacStr:     		.asciiz,  "Do another case? (n or N = no, others = yes) "
+dlStr:     		.asciiz,  "================================"
+byeStr:    		.asciiz,  "bye..."
 
 int main()
 {
