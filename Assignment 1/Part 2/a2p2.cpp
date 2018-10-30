@@ -1,3 +1,7 @@
+//Clayton Stamper, CS 2318-004, Assignment 02 (Part 2)
+//The purpose of this assignment is to conver conditions
+//and loops to goto statetments
+
 #include <iostream>
 using namespace std;
 
@@ -249,8 +253,9 @@ endI11: //                     }
                      cout << endl;
 
                      cout << commA2Str;
-                     if (used2 > 0)
-                     {
+ //                    if (used2 > 0) g
+                     if (used2 <= 0) goto endI12;
+begI12: //                     {
                         hopPtr2 = a2;
                         endPtr2 = a2 + used2;
                         do
@@ -259,12 +264,13 @@ endI11: //                     }
                            ++hopPtr2;
                         }
                         while (hopPtr2 < endPtr2);
-                     }
+endI12: //                     }
                      cout << endl;
 
                      cout << commA3Str;
-                     if (used3 > 0)
-                     {
+//                     if (used3 > 0)
+                     if (used3 <= 0) goto endI13;
+begI13: //                     {
                         hopPtr3 = a3;
                         endPtr3 = a3 + used3;
                         do
@@ -273,7 +279,7 @@ endI11: //                     }
                            ++hopPtr3;
                         }
                         while (hopPtr3 < endPtr3);
-                     }
+endI13: //                     }
                      cout << endl;
 endI2: //                  }
 
