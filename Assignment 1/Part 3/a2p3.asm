@@ -10,7 +10,45 @@
 #include <iostream>
 #using namespace std;
 
-################################################
+
+
+
+#int a1[12],
+#    a2[12],
+#    a3[12];
+#char einStr[]    = "Enter integer #";
+#char moStr[]     = "Max of ";
+#char ieStr[]     = " ints entered...";
+#char emiStr[]    = "Enter more ints? (n or N = no, others = yes) ";
+#char begA1Str[]  = "beginning a1: ";
+#char procA1Str[] = "processed a1: ";
+#char commA2Str[] = "          a2: ";
+#char commA3Str[] = "          a3: ";
+#char dacStr[]    = "Do another case? (n or N = no, others = yes) ";
+#char dlStr[]     = "================================";
+#char byeStr[]    = "bye...";
+
+			.data
+a1:			.space, 48
+a2:			.space, 48
+a3: 			.space, 48
+einStr:			.asciiz, "\nEnter integer #"
+moStr:			.asciiz, "Max of "
+ieStr:			.asciiz, " ints entered..."
+emiStr:    		.asciiz, "Enter more ints? (n or N = no, others = yes) "
+begA1Str:  		.asciiz, "beginning a1: "
+procA1Str:  		.asciiz, "processed a1: "
+commA2Str: 		.asciiz, "          a2: "
+commA3Str:  		.asciiz, "          a3: "
+dacStr:     		.asciiz,  "Do another case? (n or N = no, others = yes) "
+dlStr:     		.asciiz,  "================================"
+byeStr:    		.asciiz,  "bye..."
+
+			.text
+			.globl main
+			
+main:
+			################################################
 # Register usage:
 #################
 # $a1: endPtr1
@@ -29,63 +67,41 @@
 # $v1: reply or temp-holder 1 (non-overlappingly)
 ################################################
 
+#int main()
+#{
+#               char reply;
+#               int used1,
+#                   used2,
+#                   used3,
+#                   target,
+#                  total,
+#                   mean,
+#                   *hopPtr1,
+#                   *hopPtr2,
+#                   *hopPtr21,
+#                   *hopPtr3,
+#                   *endPtr1,
+#                   *endPtr2,
+#                   *endPtr3;
 
-#int a1[12],
-#    a2[12],
-#    a3[12];
-#char einStr[]    = "Enter integer #";
-#char moStr[]     = "Max of ";
-char ieStr[]     = " ints entered...";
-char emiStr[]    = "Enter more ints? (n or N = no, others = yes) ";
-char begA1Str[]  = "beginning a1: ";
-char procA1Str[] = "processed a1: ";
-char commA2Str[] = "          a2: ";
-char commA3Str[] = "          a3: ";
-char dacStr[]    = "Do another case? (n or N = no, others = yes) ";
-char dlStr[]     = "================================";
-char byeStr[]    = "bye...";
+			
 
-			.data
-a1:			.space, 48
-a2:			.space, 48
-a3: 			.space, 48
-einStr:			.asciiz, "\nEnter integer #"
-moStr:			.asciiz, "Max of "
-ieStr:			.asciiz, " ints entered..."
-emiStr:    		.asciiz, "Enter more ints? (n or N = no, others = yes) "
-begA1Str:  		.asciiz, "beginning a1: "
-procA1Str:  		.asciiz, "processed a1: "
-commA2Str: 		.asciiz, "          a2: "
-commA3Str:  		.asciiz, "          a3: "
-dacStr:     		.asciiz,  "Do another case? (n or N = no, others = yes) "
-dlStr:     		.asciiz,  "================================"
-byeStr:    		.asciiz,  "bye..."
-
-int main()
-{
-               char reply;
-               int used1,
-                   used2,
-                   used3,
-                   target,
-                   total,
-                   mean,
-                   *hopPtr1,
-                   *hopPtr2,
-                   *hopPtr21,
-                   *hopPtr3,
-                   *endPtr1,
-                   *endPtr2,
-                   *endPtr3;
-
-               cout << endl;
-               reply = 'y';
-               //while (reply != 'n' && reply != 'N')
-               goto WTest1;
-begW1://       {
-                  used1 = 0;
-                  used2 = 0;
-                  used3 = 0;
+#               cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
+#               reply = 'y';
+			li $v1, 'y'
+#               //while (reply != 'n' && reply != 'N')
+#               goto WTest1;
+			j WTest1
+begW1:#//       {
+#                  used1 = 0;
+#                  used2 = 0;
+#                  used3 = 0;
+			li $t0, 0
+			li $t1, 0
+			li $t2, 0
                   hopPtr1 = a1;
                   //while (reply != 'n' && reply != 'N')
                   goto WTest2;
