@@ -102,21 +102,47 @@ begW1:#//       {
 			li $t0, 0
 			li $t1, 0
 			li $t2, 0
-                  hopPtr1 = a1;
-                  //while (reply != 'n' && reply != 'N')
-                  goto WTest2;
-begW2://          {
-                     cout << einStr;
-                     cout << (used1 + 1);
-                     cout << ':' << ' ';
-                     cin >> *hopPtr1;
-                     ++used1;
-                     ++hopPtr1;
-                     //if (used1 < 12)
-                     if (used1 >= 12) goto elseI1;
-begI1://             {
-                        cout << emiStr;
-                        cin >> reply;
+
+#                  hopPtr1 = a1;
+			la $t5, a1
+			
+#                  //while (reply != 'n' && reply != 'N')		
+#                  goto WTest2;
+			j WTest2	
+begW2:#//          {
+      #               cout << einStr;
+      			li $v0, 4
+      			la $a0, einStr	
+#                     cout << (used1 + 1);
+			addi $a0, $t0, 1
+			li $v0, 1
+			syscall
+                     #cout << ':' << ' ';
+                     	li $v0, 11
+                     	li $a0, ':'
+              		syscall
+              		li $a0, ' '
+              		syscall
+#                     cin >> *hopPtr1;
+			li $v0, 12
+			syscall
+			move $t5, $v0
+ #                    ++used1;
+ 			addi $t0, $t0, 1
+#                     ++hopPtr1;
+			addi $t5, $t5, 4			
+#                     //if (used1 < 12)
+#                     if (used1 >= 12) goto elseI1;
+			li $t0, 12
+			bge $t1, $t0, elseI1
+begI1:#//             {
+#                        cout << emiStr;
+			li $v0, 4
+			la $a0, emiStr
+			syscall
+ #                       cin >> reply;
+ 			li $v0, 12
+ 			syscall
                      goto endI1;
 //                   }
 elseI1://             else
@@ -385,10 +411,14 @@ endI2://          }
                   cout << dacStr;
                   cin >> reply;
                   cout << endl;
-WTest1://      }
-               ////if (reply != 'n' && reply != 'N') goto begW1;
-               if (reply == 'n') goto xitW1;
-               if (reply != 'N') goto begW1;
+WTest1:#//      }
+#               ////if (reply != 'n' && reply != 'N') goto begW1;
+#               if (reply == 'n') goto xitW1;
+			li $t5, 'n'
+			beq $v1, $t5, xitW1
+#               if (reply != 'N') goto begW1;
+			li $t5, 'N'
+			bne, $v1, $t5, begW1
 xitW1:
                cout << dlStr << '\n';
                cout << byeStr << '\n';

@@ -54,12 +54,52 @@ main:
 			syscall
 #               reply = 'y';
 			li $v1, 'y'
+#               //while (reply != 'n' && reply != 'N')
+#               goto WTest1;
+			j WTest1
+begW1:#//       {
+#                  used1 = 0;
+#                  used2 = 0;
+#                  used3 = 0;
+			li $t0, 0
+			li $t1, 0
+			li $t2, 0
+
+#                  hopPtr1 = a1;
+			la $t5, a1
+			
+#                  //while (reply != 'n' && reply != 'N')		
+#                  goto WTest2;
+#			j WTest2	
+begW2:#//          {
+      #               cout << einStr;
+      			li $v0, 4
+      			la $a0, einStr	
+#                     cout << (used1 + 1);
+			addi $a0, $t0, 1
+			li $v0, 1
+			syscall
+                     #cout << ':' << ' ';
+                     	li $v0, 11
+                     	li $a0, ':'
+              		syscall
+              		li $a0, ' '
+              		syscall
+			
+
+			
+WTest1:#//      }
+#               ////if (reply != 'n' && reply != 'N') goto begW1;
+#               if (reply == 'n') goto xitW1;
+			li $t5, 'n'
+			beq $v1, $t5, xitW1
+#               if (reply != 'N') goto begW1;
+			li $t5, 'N'
+			bne, $v1, $t5, begW1
+xitW1:
 			
 			
-			
-			
-			
-			
+##########################################################			
 			
 			li $v0, 10
 			syscall
