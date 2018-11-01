@@ -126,7 +126,7 @@ begW2:#//          {
 #                     cin >> *hopPtr1;
 			li $v0, 12
 			syscall
-			move $t5, $v0
+			sw $v0, 0($t5)
  #                    ++used1;
  			addi $t1, $t1, 1
 #                     ++hopPtr1;
@@ -217,26 +217,39 @@ begI3:#//                {
  			j WTest3
 begW3:#//                   {
 #                              //if (*hopPtr3 > target)
-                              if (*hopPtr3 <= target) goto elseI4;
-begI4://                      {
-                                 *(hopPtr3 + 1) = *hopPtr3;
-                                 --hopPtr3;
-                              goto endI4;
-//                            }
-elseI4://                      else
-//                            {
-                                 //break;
-                                 goto brk1;
-endI4://                      }
-WTest3://                  }
-                           if (hopPtr3 >= endPtr3) goto begW3;
-brk1:
-                           *(hopPtr3 + 1) = target;
-                           ++used3;
-                        goto endI3;
-//                      }
-elseI3://                else
-//                      {
+#                              if (*hopPtr3 <= target) goto elseI4;
+			lw $t0, 0($t5)
+			ble $t0, $t4, elseI4
+begI4:#//                      {
+ #                                *(hopPtr3 + 1) = *hopPtr3;
+ 			lw $t0, 0($t7)
+ 			sw $t0, 4($t7)
+ 			
+#                                 --hopPtr3;
+			addi $t7, $t7, -4
+			
+#                              goto endI4;
+			j endI4
+#//                            }
+elseI4:#//                      else
+#//                            {
+#                                 //break;
+#                                 goto brk1;
+			j brk1
+endI4:#//                      }
+WTest3:#//                  }
+#                           if (hopPtr3 >= endPtr3) goto begW3;
+			bge $t7, $a3, begW3
+brk1#:
+#                           *(hopPtr3 + 1) = target;
+			sw $t4, 4($t7)
+#                           ++used3;
+			addi $t3, $t3, 1
+#                        goto endI3;
+			j endI3
+#//                      }
+elseI3:#//                else
+#//                      {
                            hopPtr2 = a2;
                            endPtr2 = a2 + used2;
                            //while (hopPtr2 < endPtr2)
