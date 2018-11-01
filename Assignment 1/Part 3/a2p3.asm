@@ -505,29 +505,42 @@ begF2:#//             {
 #                        if (target >= mean) goto elseI10;
 			bge $t4, $t8, elseI10
 begI10:#//               {
-                           *hopPtr2 = target;
-                           ++used2;
-                           ++hopPtr2;
-                        goto endI10;
-//                      }
-elseI10://               else
-//                      {
-                           //if (target > mean)
-                           if (target <= mean) goto endI11;
-begI11://                  {
-                              *hopPtr3 = target;
-                              ++used3;
-                              ++hopPtr3;
-endI11://                  }
-endI10://               }
-                     ++hopPtr1;
-FTest2://            }
-                     if (hopPtr1 < endPtr1) goto begF2;
+#                           *hopPtr2 = target;
+			sw $t4, 0($t6)
+#                           ++used2;
+			addi $t2, $t2, 1
+#                           ++hopPtr2;
+			addi $t6, $t6, 4
+#                        goto endI10;
+			j endI10
+#//                      }
+elseI10:#//               else
+#//                      {
+ #                          //if (target > mean)
+ #                          if (target <= mean) goto endI11;
+ 			ble $t4, $t8, endI11
+begI11:#//                  {
+#                              *hopPtr3 = target;
+			sw $t4, 0($t7)
+#                              ++used3;
+			addi $t3, $t3, 1
+#                              ++hopPtr3;
+			addi $t7, $t7, 4
+endI11:#//                  }
+endI10:#//               }
+#                     ++hopPtr1;
+			addi $t5, $t5, 4
+FTest2:#//            }
+#                     if (hopPtr1 < endPtr1) goto begF2;
+			blt $t5, $a1, begF2
 
-                     cout << procA1Str;
-                     //if (used1 > 0)
-                     if (used1 <= 0) goto endI12;
-begI12://            {
+#                     cout << procA1Str;
+			li $v0, 4
+			la $a0, procA1Str
+#                     //if (used1 > 0)
+#                     if (used1 <= 0) goto endI12;
+			ble $t1, $zero, endI12
+begI12:#//            {
                         hopPtr1 = a1;
                         endPtr1 = a1 + used1;
                         //do
