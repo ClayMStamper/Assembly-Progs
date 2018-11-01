@@ -205,13 +205,13 @@ begF1:#//             {
 			beqz $v1, elseI3
 begI3:#//                {
 #                           hopPtr3 = a3 + used3 - 1;
-			la $v1, a3
-			sll $t7, $t3, 2 #// hopPtr3 = used3^2
-			addi $t7, $t7, -4 #// hopPtr3 = hopPtr3 - 4
-			add $t7, $t7, $v1 #// hopPtr3 = hopPtr3 + a3
+			la $t7, a3	
+			addi $t0, $t3, -1 #// hopPtr3 = hopPtr3 - 4
+			sll $t0, $t0, 2 #// hopPtr3 = used3^2
+			add $t7, $t7, $t0 #// hopPtr3 = hopPtr3 + a3
 			
 #                           endPtr3 = a3;
-			move $a3, $v1
+			la $a3, a3
 #                           //while (hopPtr3 >= endPtr3)
  #                          goto WTest3;
  			j WTest3
@@ -253,7 +253,8 @@ elseI3:#//                else
 #                           hopPtr2 = a2;
 			la $t6, a2
 #                           endPtr2 = a2 + used2;
-			add $a2, $t6, $t2
+			sll $t0, $t2, 2
+			add $a2, $t6, $t0
 #                           //while (hopPtr2 < endPtr2)
 #                           goto WTest4;
 			j WTest4
@@ -318,7 +319,8 @@ begI6:#//             {
 #                        hopPtr1 = a1;
 			la $t5, a1
 #                        endPtr1 = a1 + used1;
-			add $a1, $t5, $t1
+			sll $t0, $t1, 2
+			add $a1, $t5, $t0
 #//                      do
 begDW1:#//               {
 #                           cout << *hopPtr1 << ' ' << ' ';
@@ -356,7 +358,8 @@ begI7:#//             {
 #                        hopPtr2 = a2;
 			la $t6, a2
 #                        endPtr2 = a2 + used2;
-			add $a2, $t6, $t2
+			sll $t0, $t2, 2
+			add $a2, $t6, $t0
 #//                      do
 begDW2:#//               {
 #                           cout << *hopPtr2 << ' ' << ' ';
@@ -393,7 +396,8 @@ begI8:#//             {
 #                        hopPtr3 = a3;
 			la $t7, a3
 #                        endPtr3 = a3 + used3;
-			add $a3, $t7, $t3
+			sll $t0, $t3, 2
+			add $a3, $t7, $t0
 #//                      do
 begDW3:#//               {
 #                           cout << *hopPtr3 << ' ' << ' ';
@@ -425,9 +429,11 @@ endI8:#//             }
 #                     hopPtr3 = a3;
  			la $t7, a3                     
 #                     endPtr2 = a2 + used2;
-			add $a2, $t6, $t2
+			sll $t0, $t2, 2
+			add $a2, $t6, $t0
 #                     endPtr3 = a3 + used3;
-			add $a3, $t7, $t3
+			sll $t0, $t3, 2
+			add $a3, $t7, $t0
  #                    //while (hopPtr2 < endPtr2 && hopPtr3 < endPtr3)
 #                     goto WTest6;
 			j WTest6
@@ -505,7 +511,8 @@ WTest8:#//            }
 #                     hopPtr1 = a1;
 			la $t5, a1
 #                     endPtr1 = a1 + used1;
-			add $a1, $t5, $t1
+			sll $t0, $t1, 2
+			add $a1, $t5, $t0
 #                     goto FTest2;
 			j FTest2
 begF2:#//             {
@@ -555,7 +562,8 @@ begI12:#//            {
 #                        hopPtr1 = a1;
 			la $t5, a1
 #                        endPtr1 = a1 + used1;
-			add $a1, $t5, $t1
+			sll $t0, $t1, 2
+			add $a1, $t5, $t0
 #                        //do
 begDW4:#//               {
 #                           cout << *hopPtr1 << ' ' << ' ';
@@ -593,7 +601,8 @@ begI13:#//            {
 #                        hopPtr2 = a2;
 			la $t6, a2
 #                        endPtr2 = a2 + used2;
-			add $a2, $t6, $t2
+			sll $t0, $t2, 2
+			add $a2, $t6, $t0
 #                        //do
 begDW5:#//               {
 #                           cout << *hopPtr2 << ' ' << ' ';
@@ -623,7 +632,8 @@ begI14:#//            {
 #                        hopPtr3 = a3;
 			la $t7, a3
 #                        endPtr3 = a3 + used3;
-			add $a3, $t7, $t3
+			sll $t0, $t3, 2
+			add $a3, $t7, $t0
 #                        //do
 begDW6:#//               {
  #                          cout << *hopPtr3 << ' ' << ' ';
