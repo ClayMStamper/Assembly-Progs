@@ -45,9 +45,7 @@ dlStr:     		.asciiz,  "================================\n"
 byeStr:    		.asciiz,  "bye..."
 
 			.text
-			.globl main
-			
-main:
+
 			################################################
 # Register usage:
 #################
@@ -171,7 +169,7 @@ WTest2:#//         }
 			beq $v1, $t0, xitW2
 #                  if (reply != 'N') goto begW2;
 			li $t0, 'N'
-			bne, $v1, $t0, begW1
+			bne, $v1, $t0, begW2
 xitW2:
 #                  cout << endl;
                  	 li $v0, 11
