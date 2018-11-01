@@ -483,19 +483,28 @@ WTest8:#//            }
 #                     if (hopPtr3 < endPtr3) goto begW8;
 			blt $t7, $a3, begW8
 			
-                     hopPtr2 = a2;
-                     hopPtr3 = a3;
-                     used2 = 0;
-                     used3 = 0;
-                     //for (hopPtr1 = a1, endPtr1 = a1 + used1; hopPtr1 < endPtr1; ++hopPtr1)
-                     hopPtr1 = a1;
-                     endPtr1 = a1 + used1;
-                     goto FTest2;
-begF2://             {
-                        target = *hopPtr1;
-                        //if (target < mean)
-                        if (target >= mean) goto elseI10;
-begI10://               {
+#                     hopPtr2 = a2;
+			la $t6, a2
+#                     hopPtr3 = a3;
+			la $t7, a3
+#                     used2 = 0;
+			li $t2, 0
+#                     used3 = 0;
+			li $t3, 0
+#                     //for (hopPtr1 = a1, endPtr1 = a1 + used1; hopPtr1 < endPtr1; ++hopPtr1)
+#                     hopPtr1 = a1;
+			la $t5, a1
+#                     endPtr1 = a1 + used1;
+			add $a1, $t5, $t1
+#                     goto FTest2;
+			j FTest2
+begF2:#//             {
+#                        target = *hopPtr1;
+			lw $t4, 0($t5)
+#                        //if (target < mean)
+#                        if (target >= mean) goto elseI10;
+			bge $t4, $t8, elseI10
+begI10:#//               {
                            *hopPtr2 = target;
                            ++used2;
                            ++hopPtr2;
