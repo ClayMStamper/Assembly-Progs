@@ -201,29 +201,29 @@ begF1:#//             {
  #                       //if (target % 2 == 1)
  #                       ////if (target % 2 != 1) goto elseI3;
 #                        if ( (target & 1) != 1) goto elseI3;
-			andi $t0, $t4, 1
-			beqz $t0, elseI3
+			andi $v1, $t4, 1
+			beqz $v1, elseI3
 begI3:#//                {
 #                           hopPtr3 = a3 + used3 - 1;
-			la $t0, a3
+			la $v1, a3
 			sll $t7, $t3, 2 #// hopPtr3 = used3^2
 			addi $t7, $t7, -4 #// hopPtr3 = hopPtr3 - 4
-			add $t7, $t7, $t0 #// hopPtr3 = hopPtr3 + a3
+			add $t7, $t7, $v1 #// hopPtr3 = hopPtr3 + a3
 			
 #                           endPtr3 = a3;
-			move $a3, $t0
+			move $a3, $v1
 #                           //while (hopPtr3 >= endPtr3)
  #                          goto WTest3;
  			j WTest3
 begW3:#//                   {
 #                              //if (*hopPtr3 > target)
 #                              if (*hopPtr3 <= target) goto elseI4;
-			lw $t0, 0($t5)
-			ble $t0, $t4, elseI4
+			lw $v1, 0($t5)
+			ble $v1, $t4, elseI4
 begI4:#//                      {
  #                                *(hopPtr3 + 1) = *hopPtr3;
- 			lw $t0, 0($t7)
- 			sw $t0, 4($t7)
+ 			lw $v1, 0($t7)
+ 			sw $v1, 4($t7)
  			
 #                                 --hopPtr3;
 			addi $t7, $t7, -4
@@ -250,37 +250,53 @@ brk1#:
 #//                      }
 elseI3:#//                else
 #//                      {
-                           hopPtr2 = a2;
-                           endPtr2 = a2 + used2;
-                           //while (hopPtr2 < endPtr2)
-                           goto WTest4;
-begW4://                   {
-                              //if (*hopPtr2 >= target)
-                              if (*hopPtr2 < target) goto elseI5;
-begI5://                      {
-                                 hopPtr21 = endPtr2;
-                                 ///while (hopPtr21 > hopPtr2)
-                                 goto WTest5;
-begW5://                         {
-                                    *hopPtr21 = *(hopPtr21 - 1);
-                                    --hopPtr21;
-WTest5://                        }
-                                 if (hopPtr21 > hopPtr2) goto begW5;
+#                           hopPtr2 = a2;
+			la $t6, a2
+#                           endPtr2 = a2 + used2;
+			add $a2, $t6, $t2
+#                           //while (hopPtr2 < endPtr2)
+#                           goto WTest4;
+			j WTest4
+begW4:#//                   {
+#                              //if (*hopPtr2 >= target)
+#                              if (*hopPtr2 < target) goto elseI5;
+			lw $v1, 0($t6)
+			blt $v1, $t4, elseI5
+begI5:#//                      {
+#                                 hopPtr21 = endPtr2;
+			move $t8, $t6
+ #                                ///while (hopPtr21 > hopPtr2)
+#                                 goto WTest5;
+			j WTest5
+begW5:#//                         {
+#                                    *hopPtr21 = *(hopPtr21 - 1);
+			lw $v1, -4($t8)
+			sw $v1 0($t8)
+#                                    --hopPtr21;
+			addi $t8, -4
+WTest5:#//                        }
+#                                 if (hopPtr21 > hopPtr2) goto begW5;
+			bgt $t8, $t6, begW5
 
-                                 ///break;
-                                 goto brk2;
-                           ///goto endI5; // unreacheable
-//                            }
-elseI5://                      else
-//                            {
-                                 ++hopPtr2;
-endI5://                      }
-WTest4://                  }
-                           if (hopPtr2 < endPtr2) goto begW4;
+#                                 ///break;
+#                                 goto brk2;
+			j brk2
+#                           ///goto endI5; // unreacheable
+#//                            }
+#elseI5://                      else
+#//                            {
+#                                 ++hopPtr2;
+			addi $6, $t6 4
+endI5:#//                      }
+WTest4:#//                  }
+#                           if (hopPtr2 < endPtr2) goto begW4;
+			blt $t6, $a2, begW4
 brk2:
-                           *hopPtr2 = target;
-                           ++used2;
-endI3://                }
+#                           *hopPtr2 = target;
+			sw $t4, 0($t6)
+#                           ++used2;
+			addi $t2, $t2, 1
+endI3:#//                }
                         mean = total/used1;
                      ++hopPtr1;
 FTest1://            }
