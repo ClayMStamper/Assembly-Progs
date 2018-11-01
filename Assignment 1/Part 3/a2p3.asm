@@ -367,22 +367,41 @@ begDW2:#//               {
 #                           ++hopPtr2;
 			add $t6, $t6, 4
 DWTest2:#//              }
-                        //while (hopPtr2 < endPtr2);
-                        if (hopPtr2 < endPtr2) goto begDW2;
-endI7://             }
-                     cout << endl;
+#                        //while (hopPtr2 < endPtr2);
+ #                       if (hopPtr2 < endPtr2) goto begDW2;
+ 			blt $t6, $a2, begDW2
+endI7:#//             }
+#                     cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
 
-                     cout << commA3Str;
-                     //if (used3 > 0)
-                     if (used3 <= 0) goto endI8;
-begI8://             {
-                        hopPtr3 = a3;
-                        endPtr3 = a3 + used3;
-//                      do
-begDW3://               {
-                           cout << *hopPtr3 << ' ' << ' ';
-                           ++hopPtr3;
-DWTest3://              }
+#                     cout << commA3Str;
+			li $v0, 4
+			la $a0, commA3Str
+			syscall
+			
+#                     //if (used3 > 0)
+#                     if (used3 <= 0) goto endI8;
+			ble $ $t3, $zero, endI8
+begI8:#//             {
+#                        hopPtr3 = a3;
+			la $t7, a3
+#                        endPtr3 = a3 + used3;
+			add $a3, $t7, $t3
+#//                      do
+begDW3:#//               {
+#                           cout << *hopPtr3 << ' ' << ' ';
+			li $v0, 4
+			lw $a0, 0($t7)
+			li $v0, 11
+			li $a0 ' '
+			syscall
+			syscall			####
+			
+#                           ++hopPtr3;
+			addi $t7, $t7, 4
+DWTest3:#//              }
                         //while (hopPtr3 < endPtr3);
                         if (hopPtr3 < endPtr3) goto begDW3;
 endI8://             }
