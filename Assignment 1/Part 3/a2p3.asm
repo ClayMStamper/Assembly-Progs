@@ -111,6 +111,7 @@ begW2:#//          {
       #               cout << einStr;
       			li $v0, 4
       			la $a0, einStr	
+      			syscall
 #                     cout << (used1 + 1);
 			addi $a0, $t1, 1
 			li $v0, 1
@@ -159,6 +160,7 @@ elseI1:#//             else
 			syscall
 			li $v0, 11
 			li $a0, '\n'
+			syscall
 #                        reply = 'n';
 			li $v1, 'n'
 endI1:#//             }
@@ -327,6 +329,8 @@ begDW1:#//               {
 			li $v0, 11
 			li $a0 ' '
 			syscall
+			li $v0, 11
+			li $a0 ' '
 			syscall			####
 			
 #                           ++hopPtr1;
@@ -362,6 +366,8 @@ begDW2:#//               {
 			li $v0, 11
 			li $a0 ' '
 			syscall
+			li $v0, 11
+			li $a0 ' '
 			syscall			####
 #                           ++hopPtr2;
 			addi $t6, $t6, 4
@@ -393,9 +399,12 @@ begDW3:#//               {
 #                           cout << *hopPtr3 << ' ' << ' ';
 			li $v0, 4
 			lw $a0, 0($t7)
+			syscall
 			li $v0, 11
 			li $a0 ' '
 			syscall
+			li $v0, 11
+			li $a0 ' '
 			syscall			####
 			
 #                           ++hopPtr3;
@@ -554,6 +563,8 @@ begDW4:#//               {
 			li $v0, 11
 			li $a0, ' '
 			syscall
+			li $v0, 11
+			li $a0, ' '
 			syscall			###
 			
 #                           ++hopPtr1;
@@ -586,6 +597,7 @@ begDW5:#//               {
 #                           cout << *hopPtr2 << ' ' << ' ';
 			li $v0, 1
 			lw $a0, 0($t6)
+			syscall
 #                           ++hopPtr2;
 			addi $t6, $t6, 4
 DWTest5:#//               }
@@ -619,6 +631,8 @@ begDW6:#//               {
 			li $v0, 11
 			li $a0, ' '
 			syscall
+			li $v0, 11
+			li $a0, ' '
 			syscall	
 #                           ++hopPtr3;
 			addi $t7, $t7, 4
@@ -642,6 +656,7 @@ endI2:#//          }
 #                  cin >> reply;
 			li $v0, 12
 			syscall
+			move $v1, $v0
 #                  cout << endl;
 			li $v0, 11
 			li $a0, '\n'
