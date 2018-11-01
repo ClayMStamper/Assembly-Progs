@@ -434,7 +434,9 @@ endI8:#//             }
 begW6:#//             {
 #                        //if (*hopPtr2 < *hopPtr3)
 #                        if (*hopPtr2 >= *hopPtr3) goto elseI9;
-			bge $t6, $t7, elseI9
+			lw $v1, 0($t6)
+			lw $t0, 0($t7)
+			bge $v1, $t0, elseI9
 begI9:#//                {
 #                           *hopPtr1 = *hopPtr2;
 			lw $v1, 0($t6)
