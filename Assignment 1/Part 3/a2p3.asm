@@ -26,7 +26,7 @@
 #char commA3Str[] = "          a3: ";
 #char dacStr[]    = "Do another case? (n or N = no, others = yes) ";
 #char dlStr[]     = "================================\n";
-#char byeStr[]    = "bye..."\n;
+#char byeStr[]    = "bye...";
 
 			.data
 a1:			.space, 48
@@ -35,14 +35,14 @@ a3: 			.space, 48
 einStr:			.asciiz, "\nEnter integer #"
 moStr:			.asciiz, "Max of "
 ieStr:			.asciiz, " ints entered..."
-emiStr:    		.asciiz, "Enter more ints? (n or N = no, others = yes) "
+emiStr:    		.asciiz, "\nEnter more ints? (n or N = no, others = yes) "
 begA1Str:  		.asciiz, "beginning a1: "
 procA1Str:  		.asciiz, "processed a1: "
 commA2Str: 		.asciiz, "          a2: "
 commA3Str:  		.asciiz, "          a3: "
 dacStr:     		.asciiz,  "Do another case? (n or N = no, others = yes) "
 dlStr:     		.asciiz,  "================================\n"
-byeStr:    		.asciiz,  "bye..."
+byeStr:    		.asciiz,  "bye...\n"
 
 			.text
 
@@ -665,7 +665,7 @@ WTest1:#//      }
 #               ////if (reply != 'n' && reply != 'N') goto begW1;
 #               if (reply == 'n') goto xitW1;
 			li $t0, 'n'
-			beq $v1, $t5, xitW1
+			beq $v1, $t0, xitW1
 #               if (reply != 'N') goto begW1;
 			li $t0, 'N'
 			bne, $v1, $t0, begW1
