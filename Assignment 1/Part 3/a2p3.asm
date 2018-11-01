@@ -99,9 +99,9 @@ begW1:#//       {
 #                  used1 = 0;
 #                  used2 = 0;
 #                  used3 = 0;
-			li $t0, 0
 			li $t1, 0
 			li $t2, 0
+			li $t3, 0
 
 #                  hopPtr1 = a1;
 			la $t5, a1
@@ -114,7 +114,7 @@ begW2:#//          {
       			li $v0, 4
       			la $a0, einStr	
 #                     cout << (used1 + 1);
-			addi $a0, $t0, 1
+			addi $a0, $t1, 1
 			li $v0, 1
 			syscall
                      #cout << ':' << ' ';
@@ -128,7 +128,7 @@ begW2:#//          {
 			syscall
 			move $t5, $v0
  #                    ++used1;
- 			addi $t0, $t0, 1
+ 			addi $t1, $t1, 1
 #                     ++hopPtr1;
 			addi $t5, $t5, 4			
 #                     //if (used1 < 12)
@@ -143,41 +143,80 @@ begI1:#//             {
  #                       cin >> reply;
  			li $v0, 12
  			syscall
-                     goto endI1;
-//                   }
-elseI1://             else
-//                   {
-                        cout << moStr << 12 << ieStr << endl;
-                        reply = 'n';
-endI1://             }
-WTest2://         }
-                  ////if (reply != 'n' && reply != 'N') goto begW2;
-                  if (reply == 'n') goto xitW2;
-                  if (reply != 'N') goto begW2;
+ 			move $v1, $v0
+#                     goto endI1;
+			j endI1
+#//                   }
+elseI1:#//             else
+#//                   {
+#                        cout << moStr << 12 << ieStr << endl;
+			li $v0, 4
+			la $a0, moStr
+			syscall
+			li $v0, 1
+			li $a0, 12
+			syscall
+			li $v0, 4
+			la $a0, ieStr
+			syscall
+			li $v0, 11
+			li $a0, '\n'
+#                        reply = 'n';
+			li $v1, 'n'
+endI1:#//             }
+WTest2:#//         }
+ #                 ////if (reply != 'n' && reply != 'N') goto begW2;
+#                  if (reply == 'n') goto xitW2;
+			li $t0, 'n'
+			beq $v1, $t0, xitW2
+#                  if (reply != 'N') goto begW2;
+			li $t0, 'N'
+			bne, $v1, $t0, begW1
 xitW2:
-                  cout << endl;
+#                  cout << endl;
+                 	 li $v0, 11
+                 	 li $a0, '\n'
+                  	syscall
 
-                  //if (used1 > 0)
-                  if (used1 <= 0) goto endI2;
-begI2://          {
-                     total = 0;
-                     //for (hopPtr1 = a1, endPtr1 = a1 + used1; hopPtr1 < endPtr1; ++hopPtr1)
-                     hopPtr1 = a1;
-                     endPtr1 = a1 + used1;
-                     goto FTest1;
-begF1://             {
-                        target = *hopPtr1;
-                        total += target;
-                        //if (target % 2 == 1)
-                        ////if (target % 2 != 1) goto elseI3;
-                        if ( (target & 1) != 1) goto elseI3;
-begI3://                {
-                           hopPtr3 = a3 + used3 - 1;
-                           endPtr3 = a3;
-                           //while (hopPtr3 >= endPtr3)
-                           goto WTest3;
-begW3://                   {
-                              //if (*hopPtr3 > target)
+#                  //if (used1 > 0)
+#                  if (used1 <= 0) goto endI2;
+			ble $t1, $zero, endI2
+begI2:#//          {
+#                     total = 0;
+			li $t9, 0
+			
+ #                   //for (hopPtr1 = a1, endPtr1 = a1 + used1; hopPtr1 < endPtr1; ++hopPtr1)
+ #                    hopPtr1 = a1;
+ 			la $t5, a1
+ #                    endPtr1 = a1 + us	ed1;
+                     	la $a1, a1
+			add $a1, $a1, $t1
+#                     goto FTest1;
+			j FTest1
+begF1:#//             {
+#                        target = *hopPtr1;
+                        move $t4, $t5
+#                        total += target;
+			add $t9, $t9, $t4
+ #                       //if (target % 2 == 1)
+ #                       ////if (target % 2 != 1) goto elseI3;
+#                        if ( (target & 1) != 1) goto elseI3;
+			andi $t0, $t4, 1
+			beqz $t0, elseI3
+begI3:#//                {
+#                           hopPtr3 = a3 + used3 - 1;
+			la $t0, a3
+			sll $t7, $t3, 2 #// hopPtr3 = used3^2
+			addi $t7, $t7, -4 #// hopPtr3 = hopPtr3 - 4
+			add $t7, $t7, $t0 #// hopPtr3 = hopPtr3 + a3
+			
+#                           endPtr3 = a3;
+			move $a3, $t0
+#                           //while (hopPtr3 >= endPtr3)
+ #                          goto WTest3;
+ 			j WTest3
+begW3:#//                   {
+#                              //if (*hopPtr3 > target)
                               if (*hopPtr3 <= target) goto elseI4;
 begI4://                      {
                                  *(hopPtr3 + 1) = *hopPtr3;
@@ -414,11 +453,11 @@ endI2://          }
 WTest1:#//      }
 #               ////if (reply != 'n' && reply != 'N') goto begW1;
 #               if (reply == 'n') goto xitW1;
-			li $t5, 'n'
+			li $t0, 'n'
 			beq $v1, $t5, xitW1
 #               if (reply != 'N') goto begW1;
-			li $t5, 'N'
-			bne, $v1, $t5, begW1
+			li $t0, 'N'
+			bne, $v1, $t0, begW1
 xitW1:
                cout << dlStr << '\n';
                cout << byeStr << '\n';
