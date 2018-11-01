@@ -123,7 +123,7 @@ begW2:#//          {
               		li $a0, ' '
               		syscall
 #                     cin >> *hopPtr1;
-			li $v0, 12
+			li $v0, 5
 			syscall
 			sw $v0, 0($t5)
  #                    ++used1;
@@ -195,7 +195,7 @@ begI2:#//          {
 			j FTest1
 begF1:#//             {
 #                        target = *hopPtr1;
-                        move $t4, $t5
+			lw $t4, 0($t5)
 #                        total += target;
 			add $t9, $t9, $t4
  #                       //if (target % 2 == 1)
@@ -397,7 +397,7 @@ begI8:#//             {
 #//                      do
 begDW3:#//               {
 #                           cout << *hopPtr3 << ' ' << ' ';
-			li $v0, 4
+			li $v0, 1
 			lw $a0, 0($t7)
 			syscall
 			li $v0, 11
