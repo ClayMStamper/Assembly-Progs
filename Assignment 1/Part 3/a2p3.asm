@@ -264,7 +264,7 @@ begW4:#//                   {
 			blt $v1, $t4, elseI5
 begI5:#//                      {
 #                                 hopPtr21 = endPtr2;
-			move $t8, $t6
+			move $t8, $t6				#######
  #                                ///while (hopPtr21 > hopPtr2)
 #                                 goto WTest5;
 			j WTest5
@@ -273,7 +273,8 @@ begW5:#//                         {
 			lw $v1, -4($t8)
 			sw $v1 0($t8)
 #                                    --hopPtr21;
-			addi $t8, -4
+			li $t0, -4
+			add $t8, $t8, $t0
 WTest5:#//                        }
 #                                 if (hopPtr21 > hopPtr2) goto begW5;
 			bgt $t8, $t6, begW5
@@ -283,7 +284,7 @@ WTest5:#//                        }
 			j brk2
 #                           ///goto endI5; // unreacheable
 #//                            }
-#elseI5://                      else
+elseI5:#//                      else
 #//                            {
 #                                 ++hopPtr2;
 			addi $6, $t6 4
@@ -344,7 +345,7 @@ endI6:#//             }
 
 #                     cout << commA2Str;
                      	li $v0, 4
-                     	li $a0, commAStr
+                     	la $a0, commA2Str
                      	syscall
 #                     //if (used2 > 0)
 #                     if (used2 <= 0) goto endI7;
@@ -365,7 +366,7 @@ begDW2:#//               {
 			syscall
 			syscall			####
 #                           ++hopPtr2;
-			add $t6, $t6, 4
+			addi $t6, $t6, 4
 DWTest2:#//              }
 #                        //while (hopPtr2 < endPtr2);
  #                       if (hopPtr2 < endPtr2) goto begDW2;
@@ -383,7 +384,7 @@ endI7:#//             }
 			
 #                     //if (used3 > 0)
 #                     if (used3 <= 0) goto endI8;
-			ble $ $t3, $zero, endI8
+			ble $t3, $zero, endI8
 begI8:#//             {
 #                        hopPtr3 = a3;
 			la $t7, a3
