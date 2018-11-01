@@ -438,33 +438,51 @@ begI9:#//                {
 #//                      }
 elseI9:#//                else
 #//                      {
-                           *hopPtr1 = *hopPtr3;
-                           ++hopPtr3;
-endI9://                }
-                        ++hopPtr1;
-WTest6://            }
-                     ////if (hopPtr2 < endPtr2 && hopPtr3 < endPtr3) goto begW6;
-                     if (hopPtr2 >= endPtr2) goto xitW6;
-                     if (hopPtr3 < endPtr3) goto begW6;
+#                           *hopPtr1 = *hopPtr3;
+			lw $v1, 0($t7)
+			sw $v1, 0($t5)
+#                           ++hopPtr3;
+			addi $t7, $t7, 4
+endI9:#//                }
+#                        ++hopPtr1;
+			addi $t5, $t5, 4                        
+WTest6:#//            }
+#                     ////if (hopPtr2 < endPtr2 && hopPtr3 < endPtr3) goto begW6;
+#                     if (hopPtr2 >= endPtr2) goto xitW6;
+			bge $t6, $12, xitW6
+#                     if (hopPtr3 < endPtr3) goto begW6;
+			blt $t7, $a3, begW6
 xitW6:
-                     //while (hopPtr2 < endPtr2)
-                     goto WTest7;
-begW7://             {
-                        *hopPtr1 = *hopPtr2;
-                        ++hopPtr2;
-                        ++hopPtr1;
-WTest7://            }
-                     if (hopPtr2 < endPtr2) goto begW7;
-
-                     //while (hopPtr3 < endPtr3)
-                     goto WTest8;
-begW8://             {
-                        *hopPtr1 = *hopPtr3;
-                        ++hopPtr3;
-                        ++hopPtr1;
-WTest8://            }
-                     if (hopPtr3 < endPtr3) goto begW8;
-
+#                     //while (hopPtr2 < endPtr2)
+#                    goto WTest7;
+			j WTest7
+begW7:#//             {
+#                        *hopPtr1 = *hopPtr2;
+			lw $v1, 0($t6)
+			sw $v1, 0($t5)
+#                        ++hopPtr2;
+			addi $t6, $t6, 4                          
+#                        ++hopPtr1;
+			addi $t5, $t5, 4                          
+WTest7:#//            }
+#                     if (hopPtr2 < endPtr2) goto begW7;
+			blt $t6, $a2, begW7
+			
+#                     //while (hopPtr3 < endPtr3)
+#                     goto WTest8;
+			j WTest8
+begW8:#//             {
+#                        *hopPtr1 = *hopPtr3;
+			lw $v1, 0($t7)
+			sw $v1, 0($t5)			
+#                        ++hopPtr3;
+			addi $t7, $t7, 4
+#                        ++hopPtr1;
+			addi $t5, $t5, 4
+WTest8:#//            }
+#                     if (hopPtr3 < endPtr3) goto begW8;
+			blt $t7, $a3, begW8
+			
                      hopPtr2 = a2;
                      hopPtr3 = a3;
                      used2 = 0;
