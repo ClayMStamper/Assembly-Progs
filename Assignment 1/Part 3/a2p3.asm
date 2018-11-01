@@ -297,38 +297,76 @@ brk2:
 #                           ++used2;
 			addi $t2, $t2, 1
 endI3:#//                }
-                        mean = total/used1;
-                     ++hopPtr1;
-FTest1://            }
-                     if (hopPtr1 < endPtr1) goto begF1;
+#                        mean = total/used1;
+			div $t9, $t1
+			mflo $t7
+ #                    ++hopPtr1;
+ 			addi $t5, $t5, 4
+FTest1:#//            }
+#                     if (hopPtr1 < endPtr1) goto begF1;
+			blt $t5, $a1, begF1
 
-                     cout << begA1Str;
-                     //if (used1 > 0)
-                     if (used1 <= 0) goto endI6;
-begI6://             {
-                        hopPtr1 = a1;
-                        endPtr1 = a1 + used1;
-//                      do
-begDW1://               {
-                           cout << *hopPtr1 << ' ' << ' ';
-                           ++hopPtr1;
-DWTest1://              }
-                        //while (hopPtr1 < endPtr1);
-                        if (hopPtr1 < endPtr1) goto begDW1;
-endI6://             }
-                     cout << endl;
+#                     cout << begA1Str;
+			li $v0, 4
+			la $a0, begA1Str
+			syscall
+#                     //if (used1 > 0)
+#                     if (used1 <= 0) goto endI6;
+                     	ble $t1, $zero, endI6
+begI6:#//             {
+#                        hopPtr1 = a1;
+			la $t5, a1
+#                        endPtr1 = a1 + used1;
+			add $a1, $t5, $t1
+#//                      do
+begDW1:#//               {
+#                           cout << *hopPtr1 << ' ' << ' ';
+			lw $v1, 0($t5)
+			li $v0, 1
+			move $a0, $v1
+			syscall
+			li $v0, 11
+			li $a0 ' '
+			syscall
+			syscall			####
+			
+#                           ++hopPtr1;
+			addi $t5, $t5, 4
+DWTest1:#//              }
+#                        //while (hopPtr1 < endPtr1);
+ #                       if (hopPtr1 < endPtr1) goto begDW1;
+ 			blt $t5, $a1, begDW1
+endI6:#//             }
+#                     cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
 
-                     cout << commA2Str;
-                     //if (used2 > 0)
-                     if (used2 <= 0) goto endI7;
-begI7://             {
-                        hopPtr2 = a2;
-                        endPtr2 = a2 + used2;
-//                      do
-begDW2://               {
-                           cout << *hopPtr2 << ' ' << ' ';
-                           ++hopPtr2;
-DWTest2://              }
+#                     cout << commA2Str;
+                     	li $v0, 4
+                     	li $a0, commAStr
+                     	syscall
+#                     //if (used2 > 0)
+#                     if (used2 <= 0) goto endI7;
+			ble $t2, $zero, endI7
+begI7:#//             {
+#                        hopPtr2 = a2;
+			la $t6, a2
+#                        endPtr2 = a2 + used2;
+			add $a2, $t6, $t2
+#//                      do
+begDW2:#//               {
+#                           cout << *hopPtr2 << ' ' << ' ';
+			li $v0, 1
+			lw $a0, 0($t6)
+			syscall
+			li $v0, 11
+			li $a0 ' '
+			syscall
+			syscall			####
+#                           ++hopPtr2;
+			add $t6, $t6, 4
+DWTest2:#//              }
                         //while (hopPtr2 < endPtr2);
                         if (hopPtr2 < endPtr2) goto begDW2;
 endI7://             }
