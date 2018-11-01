@@ -402,28 +402,42 @@ begDW3:#//               {
 #                           ++hopPtr3;
 			addi $t7, $t7, 4
 DWTest3:#//              }
-                        //while (hopPtr3 < endPtr3);
-                        if (hopPtr3 < endPtr3) goto begDW3;
-endI8://             }
-                     cout << endl;
-
-                     hopPtr1 = a1;
-                     hopPtr2 = a2;
-                     hopPtr3 = a3;
-                     endPtr2 = a2 + used2;
-                     endPtr3 = a3 + used3;
-                     //while (hopPtr2 < endPtr2 && hopPtr3 < endPtr3)
-                     goto WTest6;
-begW6://             {
-                        //if (*hopPtr2 < *hopPtr3)
-                        if (*hopPtr2 >= *hopPtr3) goto elseI9;
-begI9://                {
-                           *hopPtr1 = *hopPtr2;
-                           ++hopPtr2;
-                        goto endI9;
-//                      }
-elseI9://                else
-//                      {
+#                        //while (hopPtr3 < endPtr3);
+#                        if (hopPtr3 < endPtr3) goto begDW3;
+			blt $t7, $a3, begDW3
+endI8:#//             }
+#                     cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
+ #                    hopPtr1 = a1;
+ 			la $t5, a1
+#                     hopPtr2 = a2;
+ 			la $t6, a2
+#                     hopPtr3 = a3;
+ 			la $t7, a3                     
+#                     endPtr2 = a2 + used2;
+			add $a2, $t6, $t2
+#                     endPtr3 = a3 + used3;
+			add $a3, $t7, $t3
+ #                    //while (hopPtr2 < endPtr2 && hopPtr3 < endPtr3)
+#                     goto WTest6;
+			j WTest6
+begW6:#//             {
+#                        //if (*hopPtr2 < *hopPtr3)
+#                        if (*hopPtr2 >= *hopPtr3) goto elseI9;
+			bge $t6, $t7, elseI9
+begI9:#//                {
+#                           *hopPtr1 = *hopPtr2;
+			lw $v1, 0($t6)
+			sw $v1, 0($t5)
+#                           ++hopPtr2;
+			addi $t6, $t6, 4
+#                        goto endI9;
+			j endI9
+#//                      }
+elseI9:#//                else
+#//                      {
                            *hopPtr1 = *hopPtr3;
                            ++hopPtr3;
 endI9://                }
