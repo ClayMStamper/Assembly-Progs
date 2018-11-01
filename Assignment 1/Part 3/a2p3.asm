@@ -25,8 +25,8 @@
 #char commA2Str[] = "          a2: ";
 #char commA3Str[] = "          a3: ";
 #char dacStr[]    = "Do another case? (n or N = no, others = yes) ";
-#char dlStr[]     = "================================";
-#char byeStr[]    = "bye...";
+#char dlStr[]     = "================================\n";
+#char byeStr[]    = "bye..."\n;
 
 			.data
 a1:			.space, 48
@@ -41,7 +41,7 @@ procA1Str:  		.asciiz, "processed a1: "
 commA2Str: 		.asciiz, "          a2: "
 commA3Str:  		.asciiz, "          a3: "
 dacStr:     		.asciiz,  "Do another case? (n or N = no, others = yes) "
-dlStr:     		.asciiz,  "================================"
+dlStr:     		.asciiz,  "================================\n"
 byeStr:    		.asciiz,  "bye..."
 
 			.text
@@ -240,7 +240,7 @@ endI4:#//                      }
 WTest3:#//                  }
 #                           if (hopPtr3 >= endPtr3) goto begW3;
 			bge $t7, $a3, begW3
-brk1#:
+brk1:#
 #                           *(hopPtr3 + 1) = target;
 			sw $t4, 4($t7)
 #                           ++used3;
@@ -537,59 +537,116 @@ FTest2:#//            }
 #                     cout << procA1Str;
 			li $v0, 4
 			la $a0, procA1Str
+			syscall
 #                     //if (used1 > 0)
 #                     if (used1 <= 0) goto endI12;
 			ble $t1, $zero, endI12
 begI12:#//            {
-                        hopPtr1 = a1;
-                        endPtr1 = a1 + used1;
-                        //do
-begDW4://               {
-                           cout << *hopPtr1 << ' ' << ' ';
-                           ++hopPtr1;
-DWTest4://               }
-                        //while (hopPtr1 < endPtr1);
-                        if (hopPtr1 < endPtr1) goto begDW4;
-endI12://            }
-                     cout << endl;
+#                        hopPtr1 = a1;
+			la $t5, a1
+#                        endPtr1 = a1 + used1;
+			add $a1, $t5, $t1
+#                        //do
+begDW4:#//               {
+#                           cout << *hopPtr1 << ' ' << ' ';
+			li $v0, 1
+			lw $a0, 0($t5)
+			syscall
+			li $v0, 11
+			li $a0, ' '
+			syscall
+			syscall			###
+			
+#                           ++hopPtr1;
+			addi $t5, $t5, 4
+DWTest4:#//               }
+#                        //while (hopPtr1 < endPtr1);
+#                        if (hopPtr1 < endPtr1) goto begDW4;
+			blt $t5, $a1, begDW4
+endI12:#//            }
+#                     cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
 
-                     cout << commA2Str;
-                     //if (used2 > 0)
-                     if (used2 <= 0) goto endI13;
-begI13://            {
-                        hopPtr2 = a2;
-                        endPtr2 = a2 + used2;
-                        //do
-begDW5://               {
-                           cout << *hopPtr2 << ' ' << ' ';
-                           ++hopPtr2;
-DWTest5://               }
-                        //while (hopPtr2 < endPtr2);
-                        if (hopPtr2 < endPtr2) goto begDW5;
-endI13://            }
-                     cout << endl;
+#                     cout << commA2Str;
+			li $v0, 4
+			la $a0, commA2Str
+			syscall
+#                     //if (used2 > 0)
+#                     if (used2 <= 0) goto endI13;
+			ble $t2, $zero, endI13
+			
+begI13:#//            {
+#                        hopPtr2 = a2;
+			la $t6, a2
+#                        endPtr2 = a2 + used2;
+			add $a2, $t6, $t2
+#                        //do
+begDW5:#//               {
+#                           cout << *hopPtr2 << ' ' << ' ';
+			li $v0, 1
+			lw $a0, 0($t6)
+#                           ++hopPtr2;
+			addi $t6, $t6, 4
+DWTest5:#//               }
+#                        //while (hopPtr2 < endPtr2);
+#                        if (hopPtr2 < endPtr2) goto begDW5;
+			blt $t6, $a2 begDW5
+endI13:#//            }
+#                     cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
 
-                     cout << commA3Str;
-                     //if (used3 > 0)
-                     if (used3 <= 0) goto endI14;
-begI14://            {
-                        hopPtr3 = a3;
-                        endPtr3 = a3 + used3;
-                        //do
-begDW6://               {
-                           cout << *hopPtr3 << ' ' << ' ';
-                           ++hopPtr3;
-DWTest6://               }
-                        //while (hopPtr3 < endPtr3);
-                        if (hopPtr3 < endPtr3) goto begDW6;
-endI14://            }
-                     cout << endl;
-endI2://          }
+#                     cout << commA3Str;
+			li $v0, 4
+			la $a0, commA3Str      
+			syscall               
+#                     //if (used3 > 0)
+#                     if (used3 <= 0) goto endI14;
+			ble $t3, $zero, endI14
+begI14:#//            {
+#                        hopPtr3 = a3;
+			la $t7, a3
+#                        endPtr3 = a3 + used3;
+			add $a3, $t7, $t3
+#                        //do
+begDW6:#//               {
+ #                          cout << *hopPtr3 << ' ' << ' ';
+ 			li $v0, 1
+			lw $a0, 0($t7)
+			syscall
+			li $v0, 11
+			li $a0, ' '
+			syscall
+			syscall	
+#                           ++hopPtr3;
+			addi $t7, $t7, 4
+DWTest6:#//               }
+#                        //while (hopPtr3 < endPtr3);
+#                        if (hopPtr3 < endPtr3) goto begDW6;
+			blt $t7, $a3, begDW6
+endI14:#//            }
+#                     cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
+endI2:#//          }
 
-                  cout << endl;
-                  cout << dacStr;
-                  cin >> reply;
-                  cout << endl;
+#                  cout << endl;
+			syscall
+#                  cout << dacStr;
+			li $v0, 4
+			la $a0, dacStr
+			syscall
+#                  cin >> reply;
+			li $v0, 12
+			syscall
+#                  cout << endl;
+			li $v0, 11
+			li $a0, '\n'
+			syscall
 WTest1:#//      }
 #               ////if (reply != 'n' && reply != 'N') goto begW1;
 #               if (reply == 'n') goto xitW1;
@@ -599,10 +656,20 @@ WTest1:#//      }
 			li $t0, 'N'
 			bne, $v1, $t0, begW1
 xitW1:
-               cout << dlStr << '\n';
-               cout << byeStr << '\n';
-               cout << dlStr << '\n';
-
-               return 0;
-}
+#               cout << dlStr << '\n';
+			li $v0, 4
+			la $a0, dlStr
+			syscall
+#               cout << byeStr << '\n';
+               		la $a0, byeStr
+               		syscall
+#               cout << dlStr << '\n';
+			la $a0, dlStr
+			syscall
+			
+#               return 0;
+			li $v0, 10
+			syscall
+			
+#}
 
