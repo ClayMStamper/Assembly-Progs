@@ -133,6 +133,15 @@ begFBodyM1:
 					andi $t0, $t1, 1
 					beqz $t0, ElseI1
 #            intArr[valsToDo - i] = GetOneIntByVal(entIntPrompt);
+
+					addi $a0, $sp, 97
+					jal GetOneIntByVal
+					
+					lw $t3, 52($sp)
+					sub $t3, $t3, $t1
+					add $sp, $sp, $t3
+					sb $v0, 0($sp)
+					sub $sp, $sp, $t1
 					
 
 ####################(7)####################
@@ -142,6 +151,13 @@ begFBodyM1:
 ElseI1:
 #            GetOneIntByAddr(intArr + valsToDo - i, entIntPrompt);
 
+					lw $a0, 52($sp)
+					add $a0, $a0, $sp
+					sub $a0, $a0, $t1
+					
+					addi, $a1, $sp, 97
+					jal GetOneIntByAddr
+
 ####################(6)####################
 					
 endI1:
@@ -150,14 +166,26 @@ FTestM1:
 					bgtz $t1, begFBodyM1 
 #      ShowIntArray(intArr, valsToDo, initLab);
 
+					move $a0, $sp
+					lw $a2, 52($sp)
+					addi $a3, $sp, 74
+
 ####################(3)####################
 					jal ShowIntArray
 					
 #      for (i = 0, j = valsToDo - 1; i < j; ++i, --j)
+
+					li $t1, 0
+					lb $t2, 52($sp)
+					addi $t2, -1
+
 ####################(3)####################
 					j FTestM2
 begFBodyM2:
 #         SwapTwoInts(intArr + i, intArr + j);
+
+					add $a0, $sp, $t1
+					add $a1, $sp, $t2
 
 ####################(4)####################
 					jal SwapTwoInts
