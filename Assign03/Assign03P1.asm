@@ -137,11 +137,13 @@ begFBodyM1:
 					addi $a0, $sp, 97
 					jal GetOneIntByVal
 					
-					lw $t3, 52($sp)
-					sub $t3, $t3, $t1
-					add $sp, $sp, $t3
-					sb $v0, 0($sp)
-					sub $sp, $sp, $t1
+					lw $t3, 52($sp)		#vals to do
+					sub $t0, $t3, $t1
+					sll $t0, $t0, 2		#vals to do - i
+					add $t3, $sp, $t0	#final index
+					
+					sw $v0, 0($t3)
+
 					
 
 ####################(7)####################
@@ -151,9 +153,10 @@ begFBodyM1:
 ElseI1:
 #            GetOneIntByAddr(intArr + valsToDo - i, entIntPrompt);
 
-					lw $a0, 52($sp)
-					add $a0, $a0, $sp
-					sub $a0, $a0, $t1
+					lw $t3, 52($sp)		#vals to do
+					sub $t0, $t3, $t1	
+					sll $t0, $t0, 2		#vals to do - i
+					add $a0, $t0, $sp
 					
 					addi, $a1, $sp, 97
 					jal GetOneIntByAddr
@@ -165,9 +168,8 @@ endI1:
 FTestM1:
 					bgtz $t1, begFBodyM1 
 #      ShowIntArray(intArr, valsToDo, initLab);
-
 					move $a0, $sp
-					lw $a2, 52($sp)
+					addi $a2, $sp, 52
 					addi $a3, $sp, 74
 
 ####################(3)####################
@@ -176,8 +178,9 @@ FTestM1:
 #      for (i = 0, j = valsToDo - 1; i < j; ++i, --j)
 
 					li $t1, 0
+					
 					lb $t2, 52($sp)
-					addi $t2, -1
+					addi $t2, $t2, -1
 
 ####################(3)####################
 					j FTestM2
@@ -185,7 +188,9 @@ begFBodyM2:
 #         SwapTwoInts(intArr + i, intArr + j);
 
 					add $a0, $sp, $t1
+					sll $a0, $a0, 2
 					add $a1, $sp, $t2
+					sll $a1, $a1, 2
 
 ####################(4)####################
 					jal SwapTwoInts
@@ -196,15 +201,24 @@ FTestM2:
 					blt $t1, $t2, begFBodyM2
 #      ShowIntArray(intArr, valsToDo, flipLab);
 
+					addi $a0, $sp, 0
+					lw $a1, 52($sp)
+					addi $a2, $sp, 38
+
 ####################(3)####################
 					jal ShowIntArray
 					
 #      GetOneCharByAddr(&reply, dmPrompt);
 
+					addi $a0, $sp, 48
+					addi $a1, $sp, 28
+
 ####################(2)####################
 					jal GetOneCharByAddr
 #   }
 #   while (reply != 'n' && reply != 'N');
+
+					lb $v1, 48($sp)
 
 ####################(1)####################
 					li $t0, 'n'
@@ -306,7 +320,7 @@ ElseVI1:
 #      }
 endIfVI2:
 #   }
-endIfVI1:
+endIfVI1:	
 #}
 					jr $ra
 
