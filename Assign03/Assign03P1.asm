@@ -124,7 +124,7 @@ begWBodyM1:
 ####################(4)####################
 					jal ValidateInt
 #      for (i = valsToDo; i > 0; --i)
-					lb $t1, 52($sp)
+					lw $t1, 52($sp)
 
 ####################(1)####################
 					j FTestM1
@@ -142,9 +142,7 @@ begFBodyM1:
 					sll $t0, $t0, 2		#vals to do - i
 					add $t3, $sp, $t0	#final index
 					
-					sw $v0, 0($t3)
-
-					
+					sw $v0, 0($t3)		# store the value from function at calculated address
 
 ####################(7)####################
 					
@@ -168,9 +166,11 @@ endI1:
 FTestM1:
 					bgtz $t1, begFBodyM1 
 #      ShowIntArray(intArr, valsToDo, initLab);
-					move $a0, $sp
-					addi $a2, $sp, 52
-					addi $a3, $sp, 74
+
+					addi $a0, $sp, 0
+					#addi $a2, $sp, 52
+					lw $a1, 52($sp)
+					addi $a2, $sp, 74
 
 ####################(3)####################
 					jal ShowIntArray
@@ -187,10 +187,10 @@ FTestM1:
 begFBodyM2:
 #         SwapTwoInts(intArr + i, intArr + j);
 
-					add $a0, $sp, $t1
-					sll $a0, $a0, 2
-					add $a1, $sp, $t2
-					sll $a1, $a1, 2
+					sll $t0, $t1, 2
+					add $a0, $sp, $t0
+					sll $t0, $t2, 2	
+					add $a1, $sp, $t0
 
 ####################(4)####################
 					jal SwapTwoInts
@@ -358,6 +358,8 @@ begWBodySIA:
 					syscall
 #      --k;
 					addi $a3, $a3, -1
+					
+					li $v0, 11
 #   }
 WTestSIA:
 					bgtz $a3, begWBodySIA
