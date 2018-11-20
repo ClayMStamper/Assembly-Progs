@@ -218,7 +218,7 @@ FTestM2:
 #   }
 #   while (reply != 'n' && reply != 'N');
 
-					lb $v1, 48($sp)
+					lw $v1, 48($sp)
 
 ####################(1)####################
 					li $t0, 'n'
@@ -383,6 +383,12 @@ SwapTwoInts:
 #  *intPtr1 = *intPtr2;
 #   *intPtr2 = temp;
 
+					lw $t3, 0($a0)
+					lw $t4, 0($a1)
+					
+					sw $t4, 0($a0)
+					sw $t3, 0($a1)
+
 ####################(4)####################
 					
 #
@@ -399,6 +405,16 @@ GetOneCharByAddr:
 #################
 #   cout << prompt;
 #   cin >> *charVarToPutInPtr;
+					move $t0, $a0 # save $a0
+					
+					move $a0, $a1
+					li $v0, 4
+					syscall
+					
+					li $v0, 12
+					syscall
+					
+					sw $v0, 48($sp)
 
 ####################(7)####################
 
