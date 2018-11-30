@@ -1,7 +1,7 @@
 ################################################################################
 # Name:    Clayton
 # Class:   CS2318 - 004
-# Subject: Assignment 3 Part 3
+# Subject: Assignment 3 Part 2
 # Date:    <turn-in date> 
 ################################################################################
 #void PopulateArray1(char reply, int a1[], int* used1Ptr, int cap);
@@ -52,6 +52,11 @@ main:
 					# PROLOG:
 					####################(5)####################
 					
+					addiu $sp, $sp, -344
+					sw $ra, 340($sp)
+					sw $fp, 336($sp)
+					addiu $fp, $sp, 344
+					
 					j begDataInitM					# "clutter-reduction" jump
 endDataInitM:
 
@@ -85,7 +90,18 @@ begI_m:
 					addi $a2, $sp, 32
 					jal ShowArrayLabeled
 #                         mean = PopulateArray1223(a1, a2, a3, used1, &used2, &used3);
-					####################(10)####################					
+					####################(10)####################
+						
+					addi $a0, $sp, 192
+					addi $a1, $sp, 240
+					addi $a2, $sp, 288
+					lw $a3, 188($sp)
+					addi $t0, $sp, 184
+					sw $t0, 16($t0)
+					addi $t0, $sp, 180 
+					sw $t0, 20($t0)
+					jal PopulateArray1223
+													
 #                         ShowArrayLabeled(a2, used2, commA2Str);
 					addi $a0, $sp, 240
 					lw $a1, 184($sp)
