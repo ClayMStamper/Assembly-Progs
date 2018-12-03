@@ -101,7 +101,8 @@ begI_m:
 					addi $t0, $sp, 180 
 					sw $t0, 20($t0)
 					jal PopulateArray1223
-													
+					move $s0, $v0
+																	
 #                         ShowArrayLabeled(a2, used2, commA2Str);
 					addi $a0, $sp, 240
 					lw $a1, 184($sp)
@@ -113,7 +114,10 @@ begI_m:
 					addi $a2, $sp, 77
 					jal ShowArrayLabeled
 #                         ProcArrays(mean, a1, a2, a3, used1, &used2, &used3);
-					####################(10)####################					
+					####################(10)####################	
+					
+					move $s0, $a0, 
+													
 					jal ProcArrays
 #                         ShowArrayLabeled(a1, used1, procA1Str);
 					addi $a0, $sp, 192
