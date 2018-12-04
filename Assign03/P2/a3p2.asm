@@ -441,29 +441,41 @@ PopulateArray1223AuxO:
 #                   endPtr3 = a3;
 #                   goto WTest_PA1223AO;
 
-					lw $v0, 0($a1)
-					addi $v0, $v0, -4		#***check this***
-					add $t1, $a0, $v0
+					lw $v1, 0($a1)
+					addi $v1, $v1, -4		#***check this***
+					add $t1, $a0, $v1
 					
 					move $t9, $a0
 					
 					j WTest_PA1223AO
 					
-begW_PA1223AO:
+begW_PA1223AO:	
 #                      if (*hopPtr3 <= target) goto else_PA1223AO;
 					ble $t1, $a2, else_PA1223AO
 begI_PA1223AO:
 #                         *(hopPtr3 + 1) = *hopPtr3;
 #                         --hopPtr3;
 #                      goto endI_PA1223AO;
+					lw $v1, 0($t1) #rValue
+					sw $v1, 4($t1) #assign *hopPtr + 1
+					addi $t1, $t1, -4
+					j endI_PA1223AO
+					
 else_PA1223AO:
 #                         goto brkW_PA1223AO;
+					j brkW_PA1223AO
 endI_PA1223AO:
 WTest_PA1223AO:
 #                   if (hopPtr3 >= endPtr3) goto begW_PA1223AO;
+					ble $t1, $t9, begW_PA1223AO
 brkW_PA1223AO:
 #                   *(hopPtr3 + 1) = target;
 #                   ++(*used3Ptr);
+					sw $a2, 4($t1)
+					
+					lw $v1, 0($a1)
+					addi $v1, $v1, 1
+					sw $v1, 0($a1)
 					# EPILOG:
 #}
 
@@ -486,11 +498,20 @@ PopulateArray1223AuxE:
 #                       *hopPtr21,
 #                       *endPtr2;
 					# PROLOG:
-					
+					addiu $sp, $sp, -32
+					sw $ra, 28($sp)
+					sw $fp, 24($sp)
+					addiu $fp, $sp, 32	
+									
 					# BODY:
 #                   hopPtr2 = a2;
 #                   endPtr2 = a2 + *used2Ptr;
 #                   goto WTest1_PA1223AE;
+					move $t1, $a1
+					lw $v1, 0($a1) #load used2 value
+					add $t9, $a0, $v1
+					j WTest1_PA1223AE
+
 begW1_PA1223AE:
 #                      if (*hopPtr2 < target) goto else_PA1223AE;
 begI_PA1223AE:
