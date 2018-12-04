@@ -440,8 +440,18 @@ PopulateArray1223AuxO:
 #                   hopPtr3 = a3 + *used3Ptr - 1;
 #                   endPtr3 = a3;
 #                   goto WTest_PA1223AO;
+
+					lw $v0, 0($a1)
+					addi $v0, $v0, -4		#***check this***
+					add $t1, $a0, $v0
+					
+					move $t9, $a0
+					
+					j WTest_PA1223AO
+					
 begW_PA1223AO:
 #                      if (*hopPtr3 <= target) goto else_PA1223AO;
+					ble $t1, $a2, else_PA1223AO
 begI_PA1223AO:
 #                         *(hopPtr3 + 1) = *hopPtr3;
 #                         --hopPtr3;
