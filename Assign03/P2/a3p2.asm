@@ -116,7 +116,16 @@ begI_m:
 #                         ProcArrays(mean, a1, a2, a3, used1, &used2, &used3);
 					####################(10)####################	
 					
-					move $s0, $a0, 
+#					move $a0, $s0
+#					addi $a1, $sp, 192
+#					addi $a2, $sp, 240
+#					addi $a3, $sp, 288
+#					lw $t0, 188($sp)
+#					sw $t0, 16($sp)	#arg5
+#					addi $t0, $sp, 184
+#					sw $t0, 20($sp)	#arg6
+#					addi $t0, $sp, 180
+#					sw $t0, 24($sp)
 													
 					jal ProcArrays
 #                         ShowArrayLabeled(a1, used1, procA1Str);
@@ -337,18 +346,41 @@ PopulateArray1223:
 #                       *hopPtr1,
 #                       *endPtr1;
 					# PROLOG:
+					addiu $sp, $sp, -40
+					sw $ra, 36($sp)
+					sw $fp, 32($sp)
+					addiu $fp, $sp, 40					
 					
 					# BODY:
+					sw $a0, 0($sp)				# save a1
+					sw $a1, 4($sp)				# save a2 
+					sw $a2, 8($sp)				# save a3 
+					sw $a3, 12($sp)				# save used1 	
+								
 #                   *used2Ptr = 0;
 #                   *used3Ptr = 0;
-#                   total = 0;
+#                   total = 0;	
 #                   hopPtr1 = a1;
 #                   endPtr1 = a1 + used1;
+					
+					lw $v0, 184($fp) #get *used2
+					sw $0, 0($v0)	 #set *used2 to 0
+					lw $v0, 180($fp)
+					sw $0, 0($v0)
+					li $s0, 0
+					lw $t1, 0($sp) # hopPtr = a1
+					lw $v0, 12($sp)
+					sll $v0, $v0, 2
+					add $t9, $v0, $t1
+					
+			
 #                   goto FTest_PA1223;
+					j FTest_PA1223
 begF_PA1223:
 #                      target = *hopPtr1;
 #                      total += target;
 #                      if (target % 2 == 0) goto else_PA1223;
+					
 begI_PA1223:
 #                         PopulateArray1223AuxO(a3, used3Ptr, target);
 #                      goto endI_PA1223;
