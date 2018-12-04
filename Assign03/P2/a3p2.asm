@@ -380,18 +380,42 @@ begF_PA1223:
 #                      target = *hopPtr1;
 #                      total += target;
 #                      if (target % 2 == 0) goto else_PA1223;
-					
+					lw $t0, 0($t1)
+					add $s0, $s0, $t0
+					srl $v0, $s0, 1	#check for even
+					sll $v0, $v0, 1
+					beq $v0, $s0, else_PA1223 
 begI_PA1223:
 #                         PopulateArray1223AuxO(a3, used3Ptr, target);
 #                      goto endI_PA1223;
+					lw $a0, 8($sp)	#load saved a3
+					lw $a1, 180($fp) #get *used3
+					move $a2, $t0
+					jal PopulateArray1223AuxO
+					j endI_PA1223
+					
 else_PA1223:
 #                         PopulateArray1223AuxE(a2, used2Ptr, target);
+					lw $a0, 0($sp)
+					lw $a1, 184($fp) #get *used2
+					move $a2, $t0
+					jal PopulateArray1223AuxE
 endI_PA1223:
 #                   ++hopPtr1;
+					addi $t1, $t1, 4
 FTest_PA1223:
 #                   if (hopPtr1 < endPtr1) goto begF_PA1223;
+					blt $t1, $t9, begF_PA1223
 #                   return total/used1;
+					lw $v0, 12($sp)
+					div $t0, $v0
+					mflo $v0
 					# EPILOG:
+					lw $fp, 32($sp)				
+					lw $ra, 36($sp)
+					addiu $sp, $sp, 40 
+					
+					jr $ra
 #}
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
