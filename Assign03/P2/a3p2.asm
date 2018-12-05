@@ -2,7 +2,7 @@
 # Name:    Clayton
 # Class:   CS2318 - 004
 # Subject: Assignment 3 Part 2
-# Date:    <turn-in date> 
+# Date:    12/6/2018
 ################################################################################
 #void PopulateArray1(char reply, int a1[], int* used1Ptr, int cap);
 #int  PopulateArray1223(int a1[], int a2[], int a3[], int used1, int* used2Ptr, int* used3Ptr);
@@ -96,10 +96,12 @@ begI_m:
 					addi $a1, $sp, 240
 					addi $a2, $sp, 288
 					lw $a3, 188($sp)
+					
 					addi $t0, $sp, 184
-					sw $t0, 16($t0)
+					sw $t0, 16($sp)
 					addi $t0, $sp, 180 
-					sw $t0, 20($t0)
+					sw $t0, 20($sp)
+					
 					jal PopulateArray1223
 					move $s0, $v0
 																	
@@ -349,13 +351,15 @@ PopulateArray1223:
 					addiu $sp, $sp, -40
 					sw $ra, 36($sp)
 					sw $fp, 32($sp)
-					addiu $fp, $sp, 40					
+					addiu $fp, $sp, 40				
 					
 					# BODY:
-					sw $a0, 0($sp)				# save a1
-					sw $a1, 4($sp)				# save a2 
-					sw $a2, 8($sp)				# save a3 
-					sw $a3, 12($sp)				# save used1 	
+					sw $a0, 0($fp)				# save a1
+					sw $a1, 4($fp)				# save a2 
+					sw $a2, 8($fp)				# save a3 
+					#sw $a3, 12($fp)				# save used1 	
+					
+					sw $s0, 16($sp)				#save calle-saved $s0
 								
 #                   *used2Ptr = 0;
 #                   *used3Ptr = 0;
@@ -363,13 +367,14 @@ PopulateArray1223:
 #                   hopPtr1 = a1;
 #                   endPtr1 = a1 + used1;
 					
-					sw $0, 184($fp) #set *used2 to 0	 
-					sw $0, 180($fp) #set *used3 to 0
+					lw $v1, 16($fp)#get address
+					sw $0, 0($v1) #set *used2 to 0	
+					lw $v1, 20($fp)
+					sw $0, 0($v1) #set *used3 to 0
 					li $s0, 0
-					lw $t1, 0($sp) # hopPtr = a1
-					lw $v0, 12($sp)
-					sll $v0, $v0, 2
-					add $t9, $v0, $t1
+					move $t1, $a0
+					sll $v1, $a3, 2
+					add $t9, $v1, $a0
 					
 			
 #                   goto FTest_PA1223;
@@ -386,8 +391,8 @@ begF_PA1223:
 begI_PA1223:
 #                         PopulateArray1223AuxO(a3, used3Ptr, target);
 #                      goto endI_PA1223;
-					#lw $a0, 8($sp)	#load saved a3
-					addi $a0, $fp, 288
+					lw $a0, 8($sp)	#load saved a3
+					#addi $a0, $fp, 288
 					#lw $a1, 180($fp) #get *used3
 					addi $a1, $fp, 180
 					move $a2, $t0
@@ -396,8 +401,8 @@ begI_PA1223:
 					
 else_PA1223:
 #                         PopulateArray1223AuxE(a2, used2Ptr, target);
-					#lw $a0, 0($sp)
-					addi $a0, $fp, 240
+					lw $a0, 4($sp)
+					#addi $a0, $fp, 240
 					#lw $a1, 184($fp) #get *used2
 					addi $a1, $fp, 184
 					move $a2, $t0
@@ -1487,3 +1492,5 @@ begDataInitPA1:
 					li $t0, '\0'
 					sb $t0, 102($sp)
 					j endDataInitPA1				# back to PopulateArray1
+
+
