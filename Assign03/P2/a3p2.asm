@@ -604,14 +604,34 @@ ProcArrays:
 					sw $fp, 32($sp)
 					addiu $fp, $sp, 40
 					
-					####################(4)####################					
+					####################(4)####################	
+					sw $a0, 0($sp)
+					sw $a1, 4($sp)
+					sw $a2, 8($sp)
+					sw $a3, 12($sp)				
 					
 					# BODY:
 #                   MergeCopy2321(used2Ptr, a1, a2, a3, used3Ptr);
-					####################(3)####################					
+					####################(3)####################	
+					lw $a0, 20($fp)
+					lw $v1, 24($fp)
+					sw $v1, 16($sp)
+									
 					jal MergeCopy2321
+					
 #                   LtMeanGtMeanCopy1223(mean, a1, a2, a3, used1, used2Ptr, used3Ptr);
-					####################(10)####################					
+					####################(10)####################	
+					lw $a0, 0($sp)
+					lw $a1, 4($sp)
+					lw $a2, 8($sp)
+					lw $a3, 12($sp)
+					lw $v1, 16($fp)
+					sw $v1, 16($sp)
+					lw $v1, 20($fp)
+					sw $v1, 20($sp)
+					lw $v1, 24($fp)
+					sw $v1, 24($sp)
+													
 					jal LtMeanGtMeanCopy1223
 					# EPILOG:
 					lw $fp, 32($sp)				
