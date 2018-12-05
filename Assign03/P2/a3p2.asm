@@ -99,7 +99,7 @@ begI_m:
 					
 					addi $t0, $sp, 184
 					sw $t0, 16($sp)
-					addi $t0, $sp, 180 
+					addi $t0, $sp, 180
 					sw $t0, 20($sp)
 					
 					jal PopulateArray1223
@@ -391,21 +391,28 @@ begF_PA1223:
 begI_PA1223:
 #                         PopulateArray1223AuxO(a3, used3Ptr, target);
 #                      goto endI_PA1223;
-					lw $a0, 8($sp)	#load saved a3
-					#addi $a0, $fp, 288
-					#lw $a1, 180($fp) #get *used3
-					addi $a1, $fp, 180
-					move $a2, $t0
+					
+
+					move $a0, $a2				
+					lw $a1, 20($fp)
+					move $a2, $t0				
+					
+					sw $t1, 24($sp)
+					sw $t9, 28($sp)					
+					
 					jal PopulateArray1223AuxO
 					j endI_PA1223
 					
 else_PA1223:
 #                         PopulateArray1223AuxE(a2, used2Ptr, target);
-					lw $a0, 4($sp)
-					#addi $a0, $fp, 240
-					#lw $a1, 184($fp) #get *used2
-					addi $a1, $fp, 184
+
+					move $a0, $a1
+					lw $a1, 16($fp)
 					move $a2, $t0
+					
+					sw $t1, 24($sp)
+					sw $t9, 28($sp)
+					
 					jal PopulateArray1223AuxE
 endI_PA1223:
 #                   ++hopPtr1;
@@ -459,7 +466,8 @@ PopulateArray1223AuxO:
 					
 begW_PA1223AO:	
 #                      if (*hopPtr3 <= target) goto else_PA1223AO;
-					ble $t1, $a2, else_PA1223AO
+					lw $v1, 0($t1)
+					ble $v1, $a2, else_PA1223AO
 begI_PA1223AO:
 #                         *(hopPtr3 + 1) = *hopPtr3;
 #                         --hopPtr3;
