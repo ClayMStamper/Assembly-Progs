@@ -118,16 +118,16 @@ begI_m:
 #                         ProcArrays(mean, a1, a2, a3, used1, &used2, &used3);
 					####################(10)####################	
 					
-#					move $a0, $s0
-#					addi $a1, $sp, 192
-#					addi $a2, $sp, 240
-#					addi $a3, $sp, 288
-#					lw $t0, 188($sp)
-#					sw $t0, 16($sp)	#arg5
-#					addi $t0, $sp, 184
-#					sw $t0, 20($sp)	#arg6
-#					addi $t0, $sp, 180
-#					sw $t0, 24($sp)
+					move $a0, $s0
+					addi $a1, $sp, 192
+					addi $a2, $sp, 240
+					addi $a3, $sp, 288
+					lw $t0, 188($sp)
+					sw $t0, 16($sp)	#arg5
+					addi $t0, $sp, 184
+					sw $t0, 20($sp)	#arg6
+					addi $t0, $sp, 180
+					sw $t0, 24($sp)
 													
 					jal ProcArrays
 #                         ShowArrayLabeled(a1, used1, procA1Str);
@@ -180,7 +180,10 @@ xitW_m:
 					jal CoutCstrNL					
 
 					# EPILOG:
-					####################(4)####################					
+					####################(4)####################	
+					lw $fp, 336($sp)
+					lw $ra, 340($sp)
+					addiu $sp, $sp, 344				
 
 #                   return 0;
 #}
@@ -425,6 +428,8 @@ FTest_PA1223:
 					div $t0, $v0
 					mflo $v0
 					# EPILOG:
+					lw $s0, 16($sp)
+					
 					lw $fp, 32($sp)				
 					lw $ra, 36($sp)
 					addiu $sp, $sp, 40 
