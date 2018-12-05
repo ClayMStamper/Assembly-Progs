@@ -483,7 +483,7 @@ else_PA1223AO:
 endI_PA1223AO:
 WTest_PA1223AO:
 #                   if (hopPtr3 >= endPtr3) goto begW_PA1223AO;
-					ble $t1, $t9, begW_PA1223AO
+					bge $t1, $t9, begW_PA1223AO
 brkW_PA1223AO:
 #                   *(hopPtr3 + 1) = target;
 #                   ++(*used3Ptr);
@@ -492,7 +492,9 @@ brkW_PA1223AO:
 					lw $v1, 0($a1)
 					addi $v1, $v1, 1
 					sw $v1, 0($a1)
+					
 					# EPILOG:
+					jr $ra
 #}
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -520,21 +522,21 @@ PopulateArray1223AuxE:
 					addiu $fp, $sp, 32	
 									
 					# BODY:
-					sw $a0, 0($sp)				# save a2
-					sw $a1, 4($sp)				# save used2 
-					sw $a2, 8($sp)				# save target
+					sw $s0, 0($sp)
 									
 #                   hopPtr2 = a2;
 #                   endPtr2 = a2 + *used2Ptr;
 #                   goto WTest1_PA1223AE;
-					move $t1, $a1
+					move $t1, $a0
 					lw $v1, 0($a1) #load used2 value
+					sll $v1, $v1, 2
 					add $t9, $a0, $v1
 					j WTest1_PA1223AE
 
 begW1_PA1223AE:
 #                      if (*hopPtr2 < target) goto else_PA1223AE;
-					blt $t1, $a2,  else_PA1223AE
+					lw $v1, 0($t1)
+					blt $v1, $a2,  else_PA1223AE
 begI_PA1223AE:
 #                         hopPtr21 = endPtr2;
 #                         goto WTest2_PA1223AE;
@@ -570,6 +572,8 @@ brkW1_PA1223AE:
 					sw $v1, 0($a1)
 					
 					# EPILOG:
+					lw $s0, 0($sp)
+					
 					lw $fp, 24($sp)				
 					lw $ra, 28($sp)
 					addiu $sp, $sp, 32 
