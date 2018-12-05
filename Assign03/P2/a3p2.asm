@@ -514,9 +514,12 @@ PopulateArray1223AuxE:
 
 begW1_PA1223AE:
 #                      if (*hopPtr2 < target) goto else_PA1223AE;
+					blt $t1, $a2,  else_PA1223AE
 begI_PA1223AE:
 #                         hopPtr21 = endPtr2;
 #                         goto WTest2_PA1223AE;
+					move $s0, $t9
+					j WTest2_PA1223AE
 begW2_PA1223AE:
 #                            *hopPtr21 = *(hopPtr21 - 1);
 #                            --hopPtr21;
