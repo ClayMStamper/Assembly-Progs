@@ -360,7 +360,7 @@ PopulateArray1223:
 					sw $a0, 0($fp)				# save a1
 					sw $a1, 4($fp)				# save a2 
 					sw $a2, 8($fp)				# save a3 
-					#sw $a3, 12($fp)				# save used1 	
+					sw $a3, 12($fp)				# save used1 	
 					
 					sw $s0, 16($sp)				#save calle-saved $s0
 								
@@ -388,9 +388,9 @@ begF_PA1223:
 #                      if (target % 2 == 0) goto else_PA1223;
 					lw $t0, 0($t1)
 					add $s0, $s0, $t0
-					srl $v0, $s0, 1	#check for even
-					sll $v0, $v0, 1
-					beq $v0, $s0, else_PA1223 
+					srl $v1, $t0, 1	#check for even
+					sll $v1, $v1, 1
+					beq $v1, $t0, else_PA1223 
 begI_PA1223:
 #                         PopulateArray1223AuxO(a3, used3Ptr, target);
 #                      goto endI_PA1223;
@@ -409,6 +409,7 @@ begI_PA1223:
 else_PA1223:
 #                         PopulateArray1223AuxE(a2, used2Ptr, target);
 
+					
 					move $a0, $a1
 					lw $a1, 16($fp)
 					move $a2, $t0
@@ -418,14 +419,22 @@ else_PA1223:
 					
 					jal PopulateArray1223AuxE
 endI_PA1223:
+
+					lw $t1, 24($sp)
+					lw $t9, 28($sp)
+			
+					lw $a0, 0($fp)
+					lw $a1, 4($fp)
+					lw $a2, 8($fp)
 #                   ++hopPtr1;
+					
 					addi $t1, $t1, 4
 FTest_PA1223:
 #                   if (hopPtr1 < endPtr1) goto begF_PA1223;
 					blt $t1, $t9, begF_PA1223
 #                   return total/used1;
 					lw $v0, 12($sp)
-					div $t0, $v0
+					div $s0, $v0
 					mflo $v0
 					# EPILOG:
 					lw $s0, 16($sp)
@@ -605,10 +614,10 @@ ProcArrays:
 					addiu $fp, $sp, 40
 					
 					####################(4)####################	
-					sw $a0, 0($sp)
-					sw $a1, 4($sp)
-					sw $a2, 8($sp)
-					sw $a3, 12($sp)				
+					sw $a0, 0($fp)
+					sw $a1, 4($fp)
+					sw $a2, 8($fp)
+					sw $a3, 12($fp)				
 					
 					# BODY:
 #                   MergeCopy2321(used2Ptr, a1, a2, a3, used3Ptr);
