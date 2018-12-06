@@ -695,37 +695,85 @@ MergeCopy2321:
 #                   endPtr2 = a2 + *used2Ptr;
 #                   endPtr3 = a3 + *used3Ptr;
 #                   goto WTest1_MC2321;
+					move $t1, $a1
+					move $t2, $a2
+					move $t3, $a3
+					
+					lw $t0, 0($a0)
+					sll $t0, $t0, 2
+					add $t8, $a2, $t0
+					
+					lw $t0, 16($sp)
+					lw $t0, 0($t0)
+					sll $t0, $t0, 2
+					add $t9, $a3, $t0
+					
+					j WTest1_MC2321
+					
 begW1_MC2321:
 #                      if (*hopPtr2 >= *hopPtr3) goto else_MC2321;
+					lw $t0, 0($t2)
+					lw $v1, 0($t3)
+					bge $t0, $v1, else_MC2321
 begI_MC2321:
-#                         *hopPtr1 = *hopPtr2;
-#                         ++hopPtr2;
+#                         *hopPtr1 = *hopPtr2;	
+#                         ++hopPtr2;				
 #                      goto endI_MC2321;
+
+					lw $t0, 0($t2)
+					sw $t0, 0($t1)
+					
+					addi $t2, $t2, 4
+					
+					j endI_MC2321
 else_MC2321:
 #                         *hopPtr1 = *hopPtr3;
 #                         ++hopPtr3;
+				
+					lw $t0, 0($t3)
+					sw $t0, 0($t1)
+					
+					addi $t3, $t3, 4
+					
 endI_MC2321:
 #                      ++hopPtr1;
+					addi $t1, $t1, 4
 WTest1_MC2321:
 #                   if (hopPtr2 >= endPtr2) goto xitW1_MC2321;
+					bge $t2, $t8, xitW1_MC2321
 #                   if (hopPtr3 < endPtr3) goto begW1_MC2321;
+					blt $t3, $t9, begW1_MC2321
 xitW1_MC2321:
 
 #                   goto WTest2_MC2321;
+					j WTest2_MC2321
 begW2_MC2321:
 #                      *hopPtr1 = *hopPtr2;
 #                      ++hopPtr2;
 #                      ++hopPtr1;
+					lw $t0, 0($t2)
+					sw $t0, 0($t1)
+					
+					addi $t2, $t2, 4
+					addi $t1, $t1, 4
 WTest2_MC2321:
 #                   if (hopPtr2 < endPtr2) goto begW2_MC2321;
+					blt $t2, $t8, begW2_MC2321
 
 #                   goto WTest3_MC2321;
+					j WTest3_MC2321
 begW3_MC2321:
 #                      *hopPtr1 = *hopPtr3;
 #                      ++hopPtr3;
 #                      ++hopPtr1;
+					lw $t0, 0($t3)
+					sw $t0, 0($t1)
+					
+					addi $t3, $t3, 4
+					addi $t1, $t1, 4
 WTest3_MC2321:
 #                   if (hopPtr3 < endPtr3) goto begW3_MC2321;
+					blt $t3, $t9, begW3_MC2321
 #}
 
 
