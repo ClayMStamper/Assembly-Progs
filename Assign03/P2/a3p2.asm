@@ -621,14 +621,17 @@ ProcArrays:
 					
 #                   LtMeanGtMeanCopy1223(mean, a1, a2, a3, used1, used2Ptr, used3Ptr);
 					####################(10)####################	
-					lw $a0, 0($sp)
-					lw $a1, 4($sp)
-					lw $a2, 8($sp)
-					lw $a3, 12($sp)
+					lw $a0, 0($fp)
+					lw $a1, 4($fp)
+					lw $a2, 8($fp)
+					lw $a3, 12($fp)
+					
 					lw $v1, 16($fp)
 					sw $v1, 16($sp)
+			
 					lw $v1, 20($fp)
 					sw $v1, 20($sp)
+					
 					lw $v1, 24($fp)
 					sw $v1, 24($sp)
 													
@@ -774,13 +777,15 @@ begW3_MC2321:
 WTest3_MC2321:
 #                   if (hopPtr3 < endPtr3) goto begW3_MC2321;
 					blt $t3, $t9, begW3_MC2321
+					
+					jr $ra
 #}
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-#void LtMeanGtMeanCopy1223(int mean, int a1[], int a2[], int a3[], 
-#                          int used1, int* used2Ptr, int* used3Ptr)
+#void LtMeanGtMeanCopy1223(int mean, int a1[], int a2[], int a3[], int used1, int* used2Ptr, int* used3Ptr)
+#                      	   $a0           $a1       $a2       $a3    16($sp)   20($sp)        24($sp)
 #{
 ###############################################################################
 LtMeanGtMeanCopy1223:
@@ -811,25 +816,70 @@ LtMeanGtMeanCopy1223:
 #                   hopPtr1 = a1;
 #                   endPtr1 = a1 + used1;
 #                   goto FTest_LMGMC1223;
+
+					move $t2, $a2
+					move $t3, $a3
+					
+					lw $v1, 20($sp)#get address
+					sw $0, 0($v1) #set *used2 to 0	
+					lw $v1, 24($sp)
+					sw $0, 0($v1) #set *used3 to 0
+					
+					move $t1, $a1
+					
+					lw $t0, 16($sp)
+					sll $t0, $t0, 2
+					add $t9, $a1, $t0
+					
+					j FTest_LMGMC1223
+					
+
 begF_LMGMC1223:
 #                      target = *hopPtr1;
 #                      if (target >= mean) goto else1_LMGMC1223;
+					lw $t5, 0($t1)
+					bge $t5, $a0, else1_LMGMC1223
 begI1_LMGMC1223:
 #                         *hopPtr2 = target;
 #                         ++(*used2Ptr);
 #                         ++hopPtr2;
 #                      goto endI1_LMGMC1223;
+					sw $t5, 0($t2)
+					
+					lw $t0, 20($sp)
+					lw $v1, 0($t0)
+					addi $v1, $t0, 1
+					sw $v1, 0($t0)
+					
+					addi $t2, $t2, 4
+					
+					j endI1_LMGMC1223
 else1_LMGMC1223:
 #                         if (target <= mean) goto endI2_LMGMC1223;
+					ble $t5, $a0, endI2_LMGMC1223
 begI2_LMGMC1223:
 #                            *hopPtr3 = target;
 #                            ++(*used3Ptr);
 #                            ++hopPtr3;
+					sw $t5, 0($t3)
+					
+					lw $t0, 24($sp)
+					lw $v1, 0($t0)
+					addi $v1, $t0, 1
+					sw $v1, 0($t0)
+					
+					addi $t3, $t3, 4
+					
 endI2_LMGMC1223:
 endI1_LMGMC1223:
 #                      ++hopPtr1;
+					addi $t1, $t1, 4
 FTest_LMGMC1223:
 #                   if (hopPtr1 < endPtr1) goto begF_LMGMC1223;
+					blt $t1, $t9, begF_LMGMC1223
+					
+					jr $ra
+					
 #}
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
